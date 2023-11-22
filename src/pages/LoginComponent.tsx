@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
 
 const LoginComponent = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -9,7 +10,7 @@ const LoginComponent = () => {
   const handleLogin = async () => {
     try {
       // Make a request to your authentication endpoint
-      const response = await fetch('/api/login', {
+      const response = await fetch(apiUrl + '/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -18,6 +19,7 @@ const LoginComponent = () => {
       });
 
       if (response.ok) {
+        login();
         // If login is successful, update the user context
         // login({ name: username, role: 'user' }); // Replace with actual user data
       } else {
