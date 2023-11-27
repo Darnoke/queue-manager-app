@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../models/User';
 import { UserRole } from '../enums/UserRole';
+import { redirect } from 'react-router-dom';
 
 interface UserProviderProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User>({ name: '', role: UserRole.None });
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   const login = () => {
     fetchUserData();
@@ -27,7 +29,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch('/api/user'); // replace with your actual API endpoint
+      const response = await fetch(apiUrl + '/auth/user', {credentials: 'include',}); // replace with your actual API endpoint
       const userData = await response.json();
 
       setUser(userData);

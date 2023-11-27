@@ -3,6 +3,8 @@ import { useUser } from '../contexts/UserContext';
 import LoginComponent from "../pages/LoginComponent";
 import { UserRole } from "../enums/UserRole";
 import RedirectToLogin from "./RedirectToLogin";
+import ClientDashboardComponent from "../pages/ClientDashboardComponent";
+import AdminDashboardComponent from "../pages/AdminDashboardComponent";
 
 const AppRouter = () => {
 
@@ -12,13 +14,14 @@ const AppRouter = () => {
     <Routes>
       <Route path="/">hello</Route>
       { user?.role === UserRole.Admin ? (
-        <Route path="/admin">Admin Dashboard</Route>
+        // <Route path="/admin" element={ <AdminDashboardComponent/> }></Route>
+        <Route path="/login" element={<AdminDashboardComponent />} />
       ) : (
         <Route path="/admin" element={<RedirectToLogin />} />
       )}
 
       { user?.role === UserRole.Client ? (
-        <Route path="/client">Client Dashboard</Route>
+        <Route path="/client" element={ <ClientDashboardComponent/> }></Route>
       ) : (
         <Route path="/client" element={<RedirectToLogin />} />
       )}

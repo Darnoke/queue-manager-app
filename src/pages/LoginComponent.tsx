@@ -1,29 +1,27 @@
 import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { TextField, Button } from '@mui/material';
 
 const LoginComponent = () => {
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
   const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      // Make a request to your authentication endpoint
-      const response = await fetch(apiUrl + '/login', {
+      const response = await fetch(apiUrl + '/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
+        credentials: 'include',
       });
 
       if (response.ok) {
         login();
-        // If login is successful, update the user context
-        // login({ name: username, role: 'user' }); // Replace with actual user data
       } else {
-        // Handle login failure
         console.error('Login failed:', response.statusText);
       }
     } catch (error) {
@@ -35,17 +33,26 @@ const LoginComponent = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </label>
+        <TextField
+          label="Username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
         <br />
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">Login</button>
+        <Button variant="contained" color="primary" type="submit">
+          Login
+        </Button>
       </form>
     </div>
   );
