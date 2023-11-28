@@ -4,7 +4,7 @@ import LoginComponent from "../pages/LoginComponent";
 import { UserRole } from "../enums/UserRole";
 import RedirectToLogin from "./RedirectToLogin";
 import ClientDashboardComponent from "../pages/ClientDashboardComponent";
-import AdminDashboardComponent from "../pages/AdminDashboardComponent";
+import AdminRoutes from "./AdminRoutes";
 
 const AppRouter = () => {
 
@@ -12,10 +12,8 @@ const AppRouter = () => {
 
   return (
     <Routes>
-      <Route path="/">hello</Route>
       { user?.role === UserRole.Admin ? (
-        // <Route path="/admin" element={ <AdminDashboardComponent/> }></Route>
-        <Route path="/login" element={<AdminDashboardComponent />} />
+        <Route path="/*" element={<AdminRoutes />} />
       ) : (
         <Route path="/admin" element={<RedirectToLogin />} />
       )}
@@ -28,6 +26,7 @@ const AppRouter = () => {
       { user?.role === UserRole.None &&
         <Route path="/login" element={<LoginComponent />}/>
       }
+      <Route path="/" element={<RedirectToLogin />} />
     </Routes>
   );
 };
