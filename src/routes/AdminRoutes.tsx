@@ -5,7 +5,7 @@ import RedirectToAdmin from "./RedirectToAdmin";
 const AdminRoutes = () => {
     return (
         <Routes>
-            <Route path="/admin" element={<AdminDashboardComponent />} />
+            <Route path="/admin/*" element={<AdminDashboardComponent />} />
             <Route path="/login" element={<RedirectToAdmin />} />
         </Routes>
     )
