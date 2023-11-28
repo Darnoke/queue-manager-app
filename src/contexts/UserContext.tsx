@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../models/User';
 import { UserRole } from '../enums/UserRole';
-import { redirect } from 'react-router-dom';
 
 interface UserProviderProps {
   children: ReactNode;
@@ -24,7 +23,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    fetchLogout()
+    fetchLogout();
   };
 
   const fetchUserData = async () => {
@@ -40,8 +39,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const fetchLogout = async () => {
     try {
-      const response = await fetch('/api/logout');
-      if (response.ok) {
+      const response = await fetch(apiUrl + '/auth/logout', {credentials: 'include',});
+      if (response.ok || response.status === 304) {
         console.log('Logout successful');
         setUser({ name: '', role: UserRole.None });
       } else {
@@ -50,11 +49,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error during logout:', error);
     }
-    
   }
 
   useEffect(() => {
-    // fetchUserData();
+    fetchUserData();
   }, []); // Empty dependency array means this effect runs only once on mount
 
   return (
