@@ -1,0 +1,14 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+    height: 5rem;
+    background-color: $palette-3;
+    color: $font-light;
+
+    button {
+        font-size: 1.5rem;
+        padding: 1rem;
+        cursor: pointer;
+    }
+}

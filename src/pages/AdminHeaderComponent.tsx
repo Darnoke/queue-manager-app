@@ -1,9 +1,10 @@
 import { useUser } from "../contexts/UserContext";
+import './AdminHeaderStyles.scss';
 
 const AdminHeaderComponent = () => {
 
+  
   const { logout } = useUser();
-
 
   return (
     <header>
