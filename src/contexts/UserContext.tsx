@@ -15,7 +15,7 @@ interface UserContextProps {
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User>({ name: '', role: UserRole.None });
+  const [user, setUser] = useState<User>({ username: '', role: UserRole.None });
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   const login = () => {
@@ -42,7 +42,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const response = await fetch(apiUrl + '/auth/logout', {credentials: 'include',});
       if (response.ok || response.status === 304) {
         console.log('Logout successful');
-        setUser({ name: '', role: UserRole.None });
+        setUser({ username: '', role: UserRole.None });
       } else {
         console.error('Logout failed:', response.statusText);
       }
