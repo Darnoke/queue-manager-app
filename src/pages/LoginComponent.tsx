@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
 import { TextField, Button } from '@mui/material';
+import ChangePasswordDialog from '../dialogs/ChangePasswordDialog';
+import './LoginComponentStyles.scss';
 
 const LoginComponent = () => {
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
   const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isChangePasswordDialogOpen, setChangePasswordDialogOpen] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -20,7 +23,12 @@ const LoginComponent = () => {
       });
 
       if (response.ok) {
-        login();
+        const data = await response.json();
+        if (data.changePassword) {
+          setChangePasswordDialogOpen(true);
+        } else {
+          login();
+        }
       } else {
         console.error('Login failed:', response.statusText);
       }
@@ -29,8 +37,14 @@ const LoginComponent = () => {
     }
   };
 
+  const onClose = () => {
+    setChangePasswordDialogOpen(false);
+    login();
+  }
+
   return (
-    <div>
+    <>
+    <div className='login-component'>
       <h2>Login</h2>
       <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
         <TextField
@@ -55,6 +69,8 @@ const LoginComponent = () => {
         </Button>
       </form>
     </div>
+    <ChangePasswordDialog open={isChangePasswordDialogOpen} onClose={onClose} oldPassword={password}/>
+    </>
   );
 };
 

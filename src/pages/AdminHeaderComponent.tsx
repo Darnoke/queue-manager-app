@@ -7,7 +7,7 @@ const AdminHeaderComponent = () => {
   const { logout } = useUser();
 
   return (
-    <header>
+    <header className="admin-header">
       <h1>
         Hello Admin
       </h1>
