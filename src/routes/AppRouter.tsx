@@ -15,7 +15,7 @@ const AppRouter = () => {
       { user?.role === UserRole.Admin ? (
         <Route path="/*" element={<AdminRoutes />} />
       ) : (
-        <Route path="/admin" element={<RedirectToLogin />} />
+        <Route path="/admin/*" element={<RedirectToLogin />} />
       )}
 
       { user?.role === UserRole.Client ? (
