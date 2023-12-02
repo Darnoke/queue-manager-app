@@ -28,9 +28,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(apiUrl + '/auth/user', {credentials: 'include',}); // replace with your actual API endpoint
-      const userData = await response.json();
+      const response = await fetch(apiUrl + '/auth/user', {credentials: 'include',});
 
+      if (response.status === 206) { // User not logged in yet
+        return;
+      }
+      const userData = await response.json();
       setUser(userData);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -53,7 +56,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   useEffect(() => {
     fetchUserData();
-  }, []); // Empty dependency array means this effect runs only once on mount
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, login, logout }}>
