@@ -16,20 +16,21 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
 
   const handleCreate = async () => {
     try {
-        const response = await fetch(apiUrl + '/admin/register', {
-          method: 'POST',
-          headers: {
-          'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username, role }),
-          credentials: 'include',
-        });
-        if (response.ok) {
-          onClose(true);
-        } else {
-          setError(await response.text());
-          console.error('Register failed:', response.statusText);
-        }
+      setError('');
+      const response = await fetch(apiUrl + '/admin/register', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, role }),
+        credentials: 'include',
+      });
+      if (response.ok) {
+        onClose(true);
+      } else {
+        setError(await response.text());
+        console.error('Register failed:', response.statusText);
+      }
     } catch (error) {
         console.error('Error during registration:', error);
       }
@@ -37,7 +38,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
 
   return (
     <Dialog open={open} onClose={() => onClose(false)}>
-      <DialogTitle>Change Password</DialogTitle>
+      <DialogTitle>Create User</DialogTitle>
       <DialogContent>
         <TextField
         label="Username"

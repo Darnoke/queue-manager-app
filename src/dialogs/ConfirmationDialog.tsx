@@ -17,7 +17,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ open, onClose, 
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Change Password</DialogTitle>
+      <DialogTitle>Confirm</DialogTitle>
       <DialogContent>
         <p>{message}</p>
       </DialogContent>

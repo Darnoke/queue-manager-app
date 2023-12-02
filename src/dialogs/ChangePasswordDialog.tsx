@@ -19,6 +19,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
 
   const handleSave = async () => {
     try {
+      setError('');
       const response = await fetch(apiUrl + '/auth/change-password', {
         method: 'POST',
         headers: {

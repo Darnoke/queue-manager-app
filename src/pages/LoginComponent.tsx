@@ -14,6 +14,7 @@ const LoginComponent = () => {
 
   const handleLogin = async () => {
     try {
+      setError('');
       const response = await fetch(apiUrl + '/auth/login', {
         method: 'POST',
         headers: {
