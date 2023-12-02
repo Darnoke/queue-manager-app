@@ -15,7 +15,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
 
   useEffect(() => {
     if (oldPassword && oldPassword !== '') setFirstTime(true);
-  }, [oldPassword]);
+  }, [open]);
 
   const handleSave = async () => {
     try {
