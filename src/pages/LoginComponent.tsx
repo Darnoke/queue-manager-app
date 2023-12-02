@@ -9,6 +9,7 @@ const LoginComponent = () => {
   const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isChangePasswordDialogOpen, setChangePasswordDialogOpen] = useState(false);
 
   const handleLogin = async () => {
@@ -30,6 +31,7 @@ const LoginComponent = () => {
           login();
         }
       } else {
+        setError(await response.text());
         console.error('Login failed:', response.statusText);
       }
     } catch (error) {
@@ -67,6 +69,9 @@ const LoginComponent = () => {
         <Button variant="contained" color="primary" type="submit">
           Login
         </Button>
+        <br />
+        <br />
+        <a className='error'>{error}</a>
       </form>
     </div>
     <ChangePasswordDialog open={isChangePasswordDialogOpen} onClose={onClose} oldPassword={password}/>

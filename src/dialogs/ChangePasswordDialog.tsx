@@ -10,6 +10,7 @@ interface ChangePasswordDialogProps {
 const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClose, oldPassword = '' }) => {
   const [newPassword, setNewPassword] = useState('');
   const [firstTime, setFirstTime] = useState(false);
+  const [error, setError] = useState('');
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   useEffect(() => {
@@ -18,19 +19,20 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
 
   const handleSave = async () => {
     try {
-        const response = await fetch(apiUrl + '/auth/change-password', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ oldPassword, newPassword }),
-            credentials: 'include',
-        });
-        if (response.ok) {
-            onClose();
-        } else {
-            console.error('Password change failed:', response.statusText);
-        }
+      const response = await fetch(apiUrl + '/auth/change-password', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ oldPassword, newPassword }),
+        credentials: 'include',
+      });
+      if (response.ok) {
+        onClose();
+      } else {
+        setError(await response.text());
+        console.error('Password change failed:', response.statusText);
+      }
     } catch (error) {
         console.error('Error during changing password:', error);
       }
@@ -60,6 +62,8 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
+        <br />
+        <a className='error'>{error}</a>
       </DialogContent>
       <DialogActions>
       {!firstTime && (

@@ -10,23 +10,25 @@ interface CreateUserDialogProps {
 const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState(UserRole.Client);
+  const [error, setError] = useState('');
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 
   const handleCreate = async () => {
     try {
         const response = await fetch(apiUrl + '/admin/register', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, role }),
-            credentials: 'include',
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, role }),
+          credentials: 'include',
         });
         if (response.ok) {
-            onClose(true);
+          onClose(true);
         } else {
-            console.error('Register failed:', response.statusText);
+          setError(await response.text());
+          console.error('Register failed:', response.statusText);
         }
     } catch (error) {
         console.error('Error during registration:', error);
@@ -60,6 +62,8 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
             </MenuItem>
           ))}
         </Select>
+        <br />
+        <a className='error'>{error}</a>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onClose(false)}>Cancel</Button>
