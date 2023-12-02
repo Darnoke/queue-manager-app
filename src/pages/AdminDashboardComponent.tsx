@@ -6,7 +6,7 @@ const AdminDashboardComponent = () => {
     <div className="container">
       <AdminHeaderComponent/>
       <Routes>
-        <Route path="/*" element={<AdminUserTable />} />
+        <Route path="/users" element={<AdminUserTable />} />
       </Routes>
     </div>
   );

@@ -11,4 +11,23 @@
         padding: 1rem;
         cursor: pointer;
     }
+
+    a {
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: $font-light;
+
+        &:hover {
+            color: darken($color: $font-light, $amount: 15)
+        }
+    }
+
+    nav {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        gap: 3rem;
+    }
 }

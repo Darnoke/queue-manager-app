@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import './AdminHeaderStyles.scss';
 
@@ -12,7 +13,7 @@ const AdminHeaderComponent = () => {
         Hello Admin
       </h1>
       <nav>
-
+        <Link to="/admin/users">Users</Link>
       </nav>
       <button onClick={logout}>
         Logout
