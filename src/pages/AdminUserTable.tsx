@@ -68,7 +68,7 @@ const AdminUserTable = () => {
   }
 
   const onEditUser = (user: User) => {
-    setSelectedUser(user);
+    setSelectedUser({...user});
     setIsEditDialogOpen(true);
   }
 

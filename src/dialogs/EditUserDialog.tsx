@@ -11,38 +11,45 @@ interface EditUserDialogProps {
 
 const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInput }) => {
   const [user, setUser] = useState<User>({} as User);
+  const [username, setUsername] = useState<string>('');
   const [error, setError] = useState('');
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   useEffect(() => {
     setUser({...userInput});
-  }, [open]);
+    setUsername(userInput.username);
+  }, [userInput]);
 
   const handleEdit = async () => {
     try {
-        setError('');
-        const response = await fetch(apiUrl + '/admin/users/' + user.username, {
-          method: 'PUT',
-          headers: {
-          'Content-Type': 'application/json',
-          },
-          body: JSON.stringify( {...user} ),
-          credentials: 'include',
-        });
-        if (response.ok) {
-          onClose(true);
-        } else {
-          setError(await response.text());
-          console.error('Edit failed:', response.statusText);
-        }
+      setError('');
+      const response = await fetch(apiUrl + '/admin/users/' + username, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify( {...user} ),
+        credentials: 'include',
+      });
+      if (response.ok) {
+        onClose(true);
+      } else {
+        setError(await response.text());
+        console.error('Edit failed:', response.statusText);
+      }
     } catch (error) {
         console.error('Error during registration:', error);
       }
   };
 
+  const closeDialog = () => {
+    setError('');
+    onClose(false)
+  }
+
 
   return (
-    <Dialog open={open} onClose={() => onClose(false)}>
+    <Dialog open={open} onClose={closeDialog}>
     <DialogTitle>Edit User</DialogTitle>
     <DialogContent>
       <TextField
@@ -53,7 +60,6 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInpu
       variant="outlined"
       value={user.username || ''}
       onChange={(e) => setUser({...user, username: e.target.value})}
-      disabled={true}
       />
       <Select
         label="Role"
@@ -73,7 +79,7 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInpu
       <a className='error'>{error}</a>
     </DialogContent>
     <DialogActions>
-      <Button onClick={() => onClose(false)}>Cancel</Button>
+      <Button onClick={closeDialog}>Cancel</Button>
       <Button onClick={handleEdit} color="primary">
         Update
       </Button>
