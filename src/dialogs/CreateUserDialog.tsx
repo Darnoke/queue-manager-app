@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem } from '@mui/material';
 import { UserRole } from '../enums/UserRole';
 
@@ -35,6 +35,12 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
         console.error('Error during registration:', error);
       }
   };
+
+  useEffect(() => {
+    setUsername('');
+    setRole(UserRole.None);
+    setError('');
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={() => onClose(false)}>
