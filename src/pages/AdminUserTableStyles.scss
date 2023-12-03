@@ -5,6 +5,7 @@
     height: calc(100vh - 7rem);
     width: 100%;
     background-color: $palette-4;
+    overflow: auto;
 
     table {
         td, th {
