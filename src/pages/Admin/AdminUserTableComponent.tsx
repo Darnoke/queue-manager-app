@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { User } from '../models/User';
+import { User } from '../../models/User';
 import './AdminUserTableStyles.scss';
 import { Button } from '@mui/material';
-import CreateUserDialog from '../dialogs/CreateUserDialog';
-import ConfirmationDialog from '../dialogs/ConfirmationDialog';
-import EditUserDialog from '../dialogs/EditUserDialog';
+import CreateUserDialog from '../../dialogs/CreateUserDialog';
+import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
+import EditUserDialog from '../../dialogs/EditUserDialog';
 
-const AdminUserTable = () => {
+const AdminUserTableComponent = () => {
   const [userData, setUserData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
@@ -112,4 +112,4 @@ const AdminUserTable = () => {
   );
 };
 
-export default AdminUserTable;
+export default AdminUserTableComponent;

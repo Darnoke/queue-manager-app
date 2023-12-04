@@ -1,15 +1,15 @@
 .admin-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 1rem 3rem;
     height: 5rem;
     background-color: $palette-3;
     color: $font-light;
+    font-size: 1.5rem;
 
     button {
         font-size: 1.5rem;
-        padding: 1rem;
-        cursor: pointer;
     }
 
     a {

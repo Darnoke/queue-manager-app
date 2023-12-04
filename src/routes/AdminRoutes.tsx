@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import AdminDashboardComponent from "../pages/AdminDashboardComponent";
+import AdminDashboardComponent from "../pages/Admin/AdminDashboardComponent";
 import RedirectToAdmin from "./RedirectToAdmin";
 
 const AdminRoutes = () => {

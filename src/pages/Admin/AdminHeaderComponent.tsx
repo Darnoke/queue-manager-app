@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { useUser } from "../contexts/UserContext";
+import { useUser } from "../../contexts/UserContext";
+import { Button } from "@mui/material";
 import './AdminHeaderStyles.scss';
 
 const AdminHeaderComponent = () => {
@@ -9,15 +10,17 @@ const AdminHeaderComponent = () => {
 
   return (
     <header className="admin-header">
-      <h1>
+      <span>
         Hello Admin
-      </h1>
+      </span>
       <nav>
         <Link to="/admin/users">Users</Link>
+        <Link to="/admin/edit">Edit</Link>
+        <Link to="/admin/plan">Plan</Link>
       </nav>
-      <button onClick={logout}>
+      <Button onClick={logout} color="secondary">
         Logout
-      </button>
+      </Button>
     </header>
   );
 };
