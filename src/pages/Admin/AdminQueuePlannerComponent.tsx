@@ -3,23 +3,14 @@ import AdminQueuePlannerSideComponent from "./AdminQueuePlannerSideComponent";
 import './AdminQueuePlannerStyles.scss';
 import 'reactflow/dist/style.css';
 
+import { nodes as initialNodes, edges as initialEdges } from './Nodes/InitialElements.js';
+import QuestionNode from "./Nodes/QuestionNode.js";
+
+const nodeTypes = {
+  question: QuestionNode,
+};
+
 const AdminQueuePlannerComponent = () => {
-
-  const initialNodes = [
-    { id: '1', type: 'input', data: { label: 'Node' }, position: { x: -150, y: 0 } },
-    { id: '2', type: 'input', data: { label: 'Node' }, position: { x: 150, y: 0 } },
-    { id: '3', data: { label: 'Node' }, position: { x: 0, y: 100 } },
-    { id: '4', data: { label: 'Node' }, position: { x: 0, y: 200 } },
-    { id: '5', type: 'output', data: { label: 'Node' }, position: { x: 0, y: 300 } },
-  ];
-  
-  const initialEdges = [
-    { id: '1->3', source: '1', target: '3' },
-    { id: '2->3', source: '2', target: '3' },
-    { id: '3->4', source: '3', target: '4' },
-    { id: '4->5', source: '4', target: '5' },
-  ];
-
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -34,6 +25,7 @@ const AdminQueuePlannerComponent = () => {
         onEdgesChange={onEdgesChange}
         fitView
         attributionPosition="bottom-right"
+        nodeTypes={nodeTypes} 
       >
         <MiniMap zoomable pannable />
         <Controls />
