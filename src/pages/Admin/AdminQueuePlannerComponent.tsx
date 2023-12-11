@@ -3,11 +3,13 @@ import { useCallback } from "react";
 import AdminQueuePlannerSideComponent from "./AdminQueuePlannerSideComponent";
 import { nodes as initialNodes, edges as initialEdges } from './Nodes/InitialElements.js';
 import QuestionNode from "./Nodes/QuestionNode.js";
+import StartNode from "./Nodes/StartNode.js";
 import './AdminQueuePlannerStyles.scss';
 import 'reactflow/dist/style.css';
 
 const nodeTypes = {
   question: QuestionNode,
+  start: StartNode,
 };
 
 const AdminQueuePlannerComponent = () => {

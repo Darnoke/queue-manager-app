@@ -49,4 +49,13 @@
         position: relative;
         margin-bottom: 10px;
     }
+
+    .react-flow__node-start {
+        background: red;
+        color: #222;
+    }
+
+    .start-node__body {
+        padding: 1rem;
+    }
 }

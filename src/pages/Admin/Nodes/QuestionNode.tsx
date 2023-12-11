@@ -58,12 +58,12 @@ interface QuestionNodeData {
   answers: Answer[]
 }
 
-interface QuestionNode {
+interface QuestionNodeParams {
   id: string,
   data: QuestionNodeData
 }
 
-function QuestionNode({ id, data }: QuestionNode) {
+function QuestionNode({ id, data }: QuestionNodeParams) {
   const { setNodes } = useReactFlow();
   const [question, setQuestion] = useState(data.question);
 
@@ -91,7 +91,7 @@ function QuestionNode({ id, data }: QuestionNode) {
   return (
     <>
       <div className="question-node__header">
-      <TextField
+        <TextField
           label="Question"
           multiline
           rows={4}
@@ -99,6 +99,7 @@ function QuestionNode({ id, data }: QuestionNode) {
           variant="filled"
           onChange={onChange}
         />
+        <Handle type="target" position={Position.Left} id={id} />
       </div>
       
       <div className="question-node__body">
