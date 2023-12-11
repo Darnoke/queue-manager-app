@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material';
 import { ChangeEvent, memo, useState } from 'react';
 import { Handle, useReactFlow, Position } from 'reactflow';
+import OpenWithIcon from '@mui/icons-material/OpenWith';
 
 interface AnswerProps {
   value: string,
@@ -43,7 +44,7 @@ function AnswerComponent({ value, handleId, nodeId }: AnswerProps) {
   return (
     <div className="question-node__answer">
       <TextField id="standard-basic" label="Standard" variant="standard" value={answerValue} onChange={onChange}/>
-      <Handle type="source" position={Position.Right} id={handleId} />
+      <Handle className='right-handle' type="source" position={Position.Right} id={handleId} />
     </div>
   );
 }
@@ -99,13 +100,17 @@ function QuestionNode({ id, data }: QuestionNodeParams) {
           variant="filled"
           onChange={onChange}
         />
-        <Handle type="target" position={Position.Left} id={id} />
+        <Handle className='left-handle' type="target" position={Position.Left} id={id} />
       </div>
       
       <div className="question-node__body">
         {data.answers.map((answer) => (
           <AnswerComponent key={answer.id} nodeId={id} value={answer.answer} handleId={answer.id} />
         ))}
+        <span className='custom-drag-handle'>
+          <OpenWithIcon/>
+        </span>
+        
       </div>
     </>
   );

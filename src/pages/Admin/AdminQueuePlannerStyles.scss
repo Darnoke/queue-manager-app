@@ -25,15 +25,18 @@
         color: #222;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 15%), 0 2px 4px -1px rgb(0 0 0 / 8%);
         border-radius: 2px;
+        cursor: default;
     }
     
     .react-flow__node-question .react-flow__handle {
-        top: 24px;
-        right: -15px;
-        width: 6px;
-        height: 10px;
-        border-radius: 2px;
-        background-color: #778899;
+        top: 50%;
+        
+        &.left-handle {
+            left: -0.25rem;
+        }
+        &.right-handle {
+            right: -0.7rem;
+        }
     }
 
     .question-node__header {
@@ -57,5 +60,9 @@
 
     .start-node__body {
         padding: 1rem;
+    }
+
+    .custom-drag-handle {
+        cursor: grab;
     }
 }

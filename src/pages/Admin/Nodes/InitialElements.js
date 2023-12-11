@@ -9,6 +9,7 @@ export const nodes = [
     {
       id: '2',
       type: 'question',
+      dragHandle: '.custom-drag-handle',
       position: { x: 100, y: 200 },
       data: {
         question: "This is a test",
