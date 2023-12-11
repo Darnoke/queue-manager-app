@@ -17,8 +17,9 @@ export const nodes = [
     },
     {
       id: '3',
+      type: 'output',
       data: {
-        label: 'Default Node',
+        label: 'Output Node',
       },
       position: { x: 400, y: 100 },
     },
