@@ -1,10 +1,13 @@
-import { MarkerType } from 'reactflow';
+// import { MarkerType } from 'reactflow';
 
-export const nodes = [
+import { Edge, Node } from "reactflow";
+
+export const nodes: Node[] = [
     {
       id: '1',
       type: 'start',
       position: { x: 250, y: 0 },
+      data: {},
     },
     {
       id: '2',
@@ -27,7 +30,7 @@ export const nodes = [
     },
 ]
 
-export const edges = [
+export const edges: Edge[] = [
     { id: 'e1-2', source: '1', target: '2'},
     // {
     //   id: 'e4-3',

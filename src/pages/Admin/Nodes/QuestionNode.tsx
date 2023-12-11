@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { ChangeEvent, memo, useState } from 'react';
 import { Handle, useReactFlow, Position } from 'reactflow';
-import OpenWithIcon from '@mui/icons-material/OpenWith';
+import { OpenWith, Add, Remove } from '@mui/icons-material';
 
 interface AnswerProps {
   value: string,
@@ -41,9 +41,36 @@ function AnswerComponent({ value, handleId, nodeId }: AnswerProps) {
     });
   };
 
+  const removeAnswer = () => {
+    if (!window.confirm("Delete answer: " + answerValue + "?")) return;
+    
+    setNodes((prevNodes) => {
+      const updatedNodes = prevNodes.map((node) => {
+        if (node.id === nodeId) {
+          const updatedAnswers = node.data.answers.filter((answer: Answer) => answer.id !== handleId);
+
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              answers: updatedAnswers,
+            },
+          };
+        }
+
+        return node;
+      });
+
+      return updatedNodes;
+    });
+  };
+
   return (
     <div className="question-node__answer">
-      <TextField id="standard-basic" label="Standard" variant="standard" value={answerValue} onChange={onChange}/>
+      <span className='remove-button' onClick={removeAnswer}>
+        <Remove />
+      </span>
+      <TextField id="standard-basic" label={handleId} variant="standard" value={answerValue} onChange={onChange}/>
       <Handle className='right-handle' type="source" position={Position.Right} id={handleId} />
     </div>
   );
@@ -89,6 +116,49 @@ function QuestionNode({ id, data }: QuestionNodeParams) {
     });
   }
 
+  const getNextFreeId = (answers: Answer[]) => {
+    const existingIds = answers.map((answer) => answer.id);
+    let idCounter = 0;
+    let nextId;
+  
+    while (true) {
+      nextId = `ans-${idCounter}`;
+      if (!existingIds.includes(nextId)) {
+        break;
+      }
+      idCounter++;
+    }
+  
+    return nextId;
+  };
+
+  const addAnswer = () => {
+    if (data.answers.length >= 8) return; // Add toastr
+    setNodes((prevNodes) => {
+      const updatedNodes = prevNodes.map((node) => {
+        if (node.id === id) {
+          const nextId = getNextFreeId(node.data.answers);
+          const updatedAnswers = [
+            ...node.data.answers,
+            { id: nextId, answer: nextId },
+          ];
+
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              answers: updatedAnswers,
+            },
+          };
+        }
+
+        return node;
+      });
+
+      return updatedNodes;
+    });
+  }
+
   return (
     <>
       <div className="question-node__header">
@@ -107,10 +177,14 @@ function QuestionNode({ id, data }: QuestionNodeParams) {
         {data.answers.map((answer) => (
           <AnswerComponent key={answer.id} nodeId={id} value={answer.answer} handleId={answer.id} />
         ))}
-        <span className='custom-drag-handle'>
-          <OpenWithIcon/>
-        </span>
-        
+        <div className="buttons">
+          <span className='custom-drag-handle'>
+            <OpenWith/>
+          </span>
+          <span className='add-button' onClick={addAnswer}>
+            <Add/>
+          </span>
+        </div>
       </div>
     </>
   );

@@ -46,11 +46,30 @@
     
     .question-node__body {
         padding: 10px;
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            .custom-drag-handle {
+                cursor: grab;
+            }
+    
+            .add-button {
+                cursor: pointer;
+            }
+        }
+
+        .remove-button {
+            cursor: pointer;
+        }
     }
     
     .question-node__answer {
         position: relative;
         margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .react-flow__node-start {
@@ -60,9 +79,5 @@
 
     .start-node__body {
         padding: 1rem;
-    }
-
-    .custom-drag-handle {
-        cursor: grab;
     }
 }

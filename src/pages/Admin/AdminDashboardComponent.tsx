@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import AdminHeaderComponent from './AdminHeaderComponent';
 import AdminUserTableComponent from './AdminUserTableComponent';
 import AdminQueueEditorComponent from './AdminQueueEditComponent';
-import AdminQueuePlannerComponent from './AdminQueuePlannerComponent';
+import AdminQueuePlannerComponent from './Nodes/AdminQueuePlannerComponent';
 const AdminDashboardComponent = () => {
   return (
     <div className="container">
