@@ -1,4 +1,4 @@
-import ReactFlow, { Background, Connection, Controls, EdgeChange, MiniMap, NodeChange, addEdge, useEdgesState, useNodesState } from "reactflow";
+import ReactFlow, { Background, Connection, Controls, EdgeChange, MiniMap, Node, NodeChange, Viewport, addEdge, useEdgesState, useNodesState, useViewport } from "reactflow";
 import { useCallback, useState } from "react";
 import AdminQueuePlannerSideComponent from "./AdminQueuePlannerSideComponent";
 import { nodes as initialNodes, edges as initialEdges } from './InitialElements.js';
@@ -7,6 +7,7 @@ import StartNode from "./StartNode.js";
 import './AdminQueuePlannerStyles.scss';
 import 'reactflow/dist/style.css';
 import ConfirmationDialog from "../../../dialogs/ConfirmationDialog.js";
+import { NodeType } from "../../../enums/NodeType.js";
 
 const nodeTypes = {
   question: QuestionNode,
@@ -16,6 +17,7 @@ const nodeTypes = {
 const AdminQueuePlannerComponent = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [viewport, setViewport] = useState<Viewport>();
 
   const [nodesToRemove, setNodesToRemove] = useState<NodeChange[]>([]);
   const [edgesToRemove, setEdgesToRemove] = useState<EdgeChange[]>([]);
@@ -78,10 +80,53 @@ const AdminQueuePlannerComponent = () => {
     setEdgesToRemove([]);
   }
 
+  function handleAddNode(nodeType: NodeType) {
+    let createdNode: Node | undefined;
+    
+    switch(nodeType) {
+      case NodeType.Question: {
+        createdNode = {
+          id: getNextFreeId(),
+          type: 'question',
+          position: { x: -(viewport?.x ?? 0), y: -(viewport?.y ?? 0) },
+          dragHandle: '.custom-drag-handle',
+          data: {
+            question: "New question",
+            answers: [
+                {
+                    id: 'ans-0',
+                    answer: 'Answer 0'
+                },
+                {
+                    id: 'ans-1',
+                    answer: 'Answer 1'
+                },
+            ]
+          },
+        }
+        break;
+      }
+    }
+    if (createdNode) addNode(createdNode);
+  }
+
+  function addNode(newNode: Node) {
+    setNodes((nodes) => nodes.concat(newNode));
+  }
+
+  function getNextFreeId(): string {
+    const usedIds = new Set(nodes.map((node) => node.id));
+
+    let nextId = 1;
+    while (usedIds.has(nextId.toString())) nextId++;
+
+    return nextId.toString();
+  }
+
   return (
     <>
     <div className="admin-queue-planner-content">
-      <AdminQueuePlannerSideComponent />
+      <AdminQueuePlannerSideComponent addNode={handleAddNode}/>
       <div>
         <ReactFlow
           nodes={nodes}
@@ -89,7 +134,9 @@ const AdminQueuePlannerComponent = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgeChange}
           onConnect={onConnect}
+          onMove={(event, viewport) => setViewport(viewport)}
           fitView
+          minZoom={0.2}
           attributionPosition="bottom-right"
           nodeTypes={nodeTypes}
         >

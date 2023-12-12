@@ -19,23 +19,27 @@
     }
 
     .react-flow__node-question {
-        font-size: 10px;
         width: 15rem;
-        background: #f5f5f6;
+        background: $palette-4;
         color: #222;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 15%), 0 2px 4px -1px rgb(0 0 0 / 8%);
         border-radius: 2px;
         cursor: default;
+    }
+
+    .react-flow__handle {
+        height: 0.5rem;
+        width: 0.5rem;
     }
     
     .react-flow__node-question .react-flow__handle {
         top: 50%;
         
         &.left-handle {
-            left: -0.25rem;
+            left: -0.35rem;
         }
         &.right-handle {
-            right: -0.7rem;
+            right: -0.8rem;
         }
     }
 
@@ -73,11 +77,21 @@
     }
 
     .react-flow__node-start {
-        background: red;
+        background: #ff7e7e;
         color: #222;
     }
 
     .start-node__body {
         padding: 1rem;
+    }
+
+    .react-flow__edge-path {
+        stroke-width: 5;
+    }
+
+    .side-container {
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
     }
 }
