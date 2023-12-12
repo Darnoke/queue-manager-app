@@ -1,11 +1,12 @@
 import ReactFlow, { Background, Connection, Controls, EdgeChange, MiniMap, NodeChange, addEdge, useEdgesState, useNodesState } from "reactflow";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import AdminQueuePlannerSideComponent from "./AdminQueuePlannerSideComponent";
 import { nodes as initialNodes, edges as initialEdges } from './InitialElements.js';
 import QuestionNode from "./QuestionNode.js";
 import StartNode from "./StartNode.js";
 import './AdminQueuePlannerStyles.scss';
 import 'reactflow/dist/style.css';
+import ConfirmationDialog from "../../../dialogs/ConfirmationDialog.js";
 
 const nodeTypes = {
   question: QuestionNode,
@@ -15,17 +16,25 @@ const nodeTypes = {
 const AdminQueuePlannerComponent = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const [nodesToRemove, setNodesToRemove] = useState<NodeChange[]>([]);
+  const [edgesToRemove, setEdgesToRemove] = useState<EdgeChange[]>([]);
+  const [deleteFlag, setDeleteFlag] = useState<boolean>(false);
+
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [confirmDialogMessage, setConfirmDialogMessage] = useState('');
   
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), []);
 
   function handleNodesChange(changes: NodeChange[]) {
     const nextChanges = changes.reduce((acc, change) => {
       if (change.type === 'remove') {
-
-        if (shouldNodeBeRemoved(change.id)) {
-          return [...acc, change];
+        if (!deleteFlag) {
+          setDeleteFlag(true);
+          setTimeout(handleMultipleDeletes, 100);
         }
- 
+
+        setNodesToRemove((nodes) => [...nodes, change]);
         return acc;
       }
 
@@ -36,15 +45,14 @@ const AdminQueuePlannerComponent = () => {
   }
 
   function handleEdgeChange(changes: EdgeChange[]) {
-    let confirmed = false;
     const nextChanges = changes.reduce((acc, change) => {
       if (change.type === 'remove') {
-
-        if (confirmed || shouldEdgeBeRemoved(change.id)) {
-          confirmed = true;
-          return [...acc, change];
+        if (!deleteFlag) {
+          setDeleteFlag(true);
+          setTimeout(handleMultipleDeletes, 100);
         }
- 
+
+        setEdgesToRemove((edges) => [...edges, change]);
         return acc;
       }
 
@@ -54,12 +62,20 @@ const AdminQueuePlannerComponent = () => {
     onEdgesChange(nextChanges)
   }
 
-  const shouldNodeBeRemoved = (nodeId: string) => {
-    return window.confirm("Delete node: " + nodeId + "?");
+  function handleMultipleDeletes() {
+    setConfirmDialogMessage('Do you want to remove all selected items?');
+    setIsConfirmDialogOpen(true);
   }
 
-  const shouldEdgeBeRemoved = (edgeId: string) => {
-    return window.confirm("Delete edge: " + edgeId + "?");
+  function deleteSelectedItems(answer: boolean) {
+    if (answer) {
+      onNodesChange(nodesToRemove);
+      onEdgesChange(edgesToRemove);
+    }
+    setIsConfirmDialogOpen(false);
+    setDeleteFlag(false);
+    setNodesToRemove([]);
+    setEdgesToRemove([]);
   }
 
   return (
@@ -83,6 +99,7 @@ const AdminQueuePlannerComponent = () => {
         </ReactFlow>
       </div>
     </div>
+    <ConfirmationDialog open={isConfirmDialogOpen} onClose={(answer: boolean) => deleteSelectedItems(answer)} messageInput={confirmDialogMessage}/>
     </>
   );
 };
