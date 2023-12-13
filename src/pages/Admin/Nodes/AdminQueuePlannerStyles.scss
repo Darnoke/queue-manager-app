@@ -81,6 +81,30 @@
         color: #222;
     }
 
+    .react-flow__node-end {
+        background: #7e7eff;
+        color: #222;
+    }
+
+    .end-node__body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        
+        padding: 0.5rem;
+        width: 10rem;
+        gap: 1rem;
+
+        .buttons {
+            display: flex;
+            justify-content: flex-start;
+            .custom-drag-handle {
+                cursor: grab;
+            }
+        }
+    }
+
     .start-node__body {
         padding: 1rem;
     }

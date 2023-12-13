@@ -8,10 +8,12 @@ import './AdminQueuePlannerStyles.scss';
 import 'reactflow/dist/style.css';
 import ConfirmationDialog from "../../../dialogs/ConfirmationDialog.js";
 import { NodeType } from "../../../enums/NodeType.js";
+import EndNode from "./EndNode.js";
 
 const nodeTypes = {
   question: QuestionNode,
   start: StartNode,
+  end: EndNode
 };
 
 const AdminQueuePlannerComponent = () => {
@@ -103,6 +105,16 @@ const AdminQueuePlannerComponent = () => {
                 },
             ]
           },
+        }
+        break;
+      }
+      case NodeType.End: {
+        createdNode = {
+          id: getNextFreeId(),
+          type: 'end',
+          position: { x: -(viewport?.x ?? 0), y: -(viewport?.y ?? 0) },
+          dragHandle: '.custom-drag-handle',
+          data: {},
         }
         break;
       }
