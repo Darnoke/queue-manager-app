@@ -118,6 +118,17 @@ const AdminQueuePlannerComponent = () => {
         }
         break;
       }
+      case NodeType.Start: {
+        const startAlreadyCreated = nodes.some(node => node.type === 'start');
+        if (startAlreadyCreated) break;
+        createdNode = {
+          id: getNextFreeId(),
+          type: 'start',
+          position: { x: -(viewport?.x ?? 0), y: -(viewport?.y ?? 0) },
+          data: {},
+        }
+        break;
+      }
     }
     if (createdNode) addNode(createdNode);
   }
