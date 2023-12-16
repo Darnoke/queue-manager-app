@@ -17,7 +17,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
   const handleCreate = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/register', {
+      const response = await fetch(apiUrl + '/admin/users/register', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
