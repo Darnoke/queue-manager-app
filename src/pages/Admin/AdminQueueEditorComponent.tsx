@@ -6,6 +6,8 @@ import { Category } from '../../models/Category';
 import CreateCategoryDialog from '../../dialogs/CreateCategoryDialog';
 import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
 import EditCategoryDialog from '../../dialogs/EditCategoryDialog';
+import { UserCategories } from '../../models/UserCategories';
+import EditUserCategoriesDialog from '../../dialogs/EditUserCategoriesDialog';
 
 interface QueueEditorProps {
   queueList : QueueList[]
@@ -14,7 +16,8 @@ interface QueueEditorProps {
 const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) => {
   const [selectedQueue, setSelectedQueue] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserCategories[]>([]);
+  const [selectedUser, setSelectedUser] = useState<UserCategories>({} as UserCategories);
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [selectedUserToAdd, setSelectedUserToAdd] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<Category>({} as Category);
@@ -124,6 +127,16 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
     if (refresh) fetchCategories();
   }
 
+  const onEditUser = (user: UserCategories) => {
+    setSelectedUser(user);
+    setIsEditUserDialogOpen(true);
+  }
+
+  const onEditUserClose = (refresh: boolean) => {
+    setIsEditUserDialogOpen(false);
+    if (refresh) fetchUsers();
+  }
+
   useEffect(() => {
     // Use an IIFE (Immediately Invoked Function Expression) to define the async function
     (async () => {
@@ -182,7 +195,7 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
           </div>
           <div className='table-container'>
             <FormControl fullWidth className='controls'>
-            <InputLabel id="userSelectLabel">Select a user</InputLabel>
+            <InputLabel id="userSelectLabel">Select user to add</InputLabel>
             <Select
               labelId="userSelectLabel"
               id="userSelect"
@@ -205,13 +218,15 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Categories</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user._id}>
                     <td>{user.username}</td>
-                    {/* <td><Button onClick={() => onEditQueue(queue)}>Edit</Button></td> */}
+                    <td>{user.categories.map(cat => cat.name).join(', ')}</td>
+                    <td><Button onClick={() => onEditUser(user)}>Edit</Button></td>
                     <td><Button onClick={() => onDeleteUser(user)}>Delete</Button></td> 
                   </tr>
                 ))}
@@ -222,10 +237,12 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
       )}
       <CreateCategoryDialog open={isCreateCategoryDialogOpen} queueId={selectedQueue} onClose={(created) => { 
         setIsCreateCategoryDialogOpen(false); 
-        created && fetchCategories()}
+        created && fetchCategories();
+      }
       }/> 
-      <ConfirmationDialog open={isConfirmDialogOpen} onClose={(answer: boolean) => onConfirmDialogClose(answer)} messageInput={confirmDialogMessage}/>
+      <ConfirmationDialog open={isConfirmDialogOpen} onClose={onConfirmDialogClose} messageInput={confirmDialogMessage}/>
       <EditCategoryDialog open={isEditCategoryDialogOpen} onClose={onEditCategoryClose} categoryInput={selectedCategory} queueId={selectedQueue}/>
+      <EditUserCategoriesDialog open={isEditUserDialogOpen} onClose={onEditUserClose} userInput={selectedUser} categories={categories} queueId={selectedQueue}/>
     </div>
   );
 };
