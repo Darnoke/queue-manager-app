@@ -6,11 +6,26 @@
   width: 100%;
   background-color: $palette-4;
   overflow: auto;
+  display: flex;
+  gap: 10px;
 
   table {
     td, th {
         padding: 0.5rem;
         text-align: left;
     }
+  }
+
+  .table-container {
+    width: calc(50% - 5px);
+
+    .controls {
+      min-height: max(5.5rem, 100px);
+    }
+  }
+
+  .queue-edit {
+    display: flex;
+    gap: 10px
   }
 }

@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
-import { QueueList } from '../models/QueueList';
+import { Category } from '../models/Category';
 
-interface EditUserDialogProps {
+interface EditCategoryDialogProps {
   open: boolean;
   onClose: (refresh: boolean) => void;
-  queueInput: QueueList;
+  categoryInput: Category;
+  queueId: String;
 }
 
-const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueInput }) => {
-  const [queue, setQueue] = useState<QueueList>({} as QueueList);
+const EditCategoryDialog: React.FC<EditCategoryDialogProps> = ({ open, onClose, categoryInput, queueId }) => {
+  const [category, setCategory] = useState<Category>({} as Category);
   const [error, setError] = useState('');
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   useEffect(() => {
-    setQueue({...queueInput});
-  }, [queueInput]);
+    setCategory({...categoryInput});
+  }, [categoryInput]);
 
   const handleEdit = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/queues/' + queue._id, {
+      const response = await fetch(apiUrl + '/admin/queues/' + queueId + '/categories/' + category._id, {
         method: 'PUT',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify( { name: queue.name } ),
+        body: JSON.stringify( { name: category.name } ),
         credentials: 'include',
       });
       if (response.ok) {
@@ -47,7 +48,7 @@ const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueIn
 
   return (
     <Dialog open={open} onClose={closeDialog}>
-    <DialogTitle>Edit Queue</DialogTitle>
+    <DialogTitle>Edit Category</DialogTitle>
     <DialogContent>
       <TextField
       label="Name"
@@ -55,8 +56,8 @@ const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueIn
       fullWidth
       margin="normal"
       variant="outlined"
-      value={queue.name || ''}
-      onChange={(e) => setQueue({...queue, name: e.target.value })}
+      value={category.name || ''}
+      onChange={(e) => setCategory({...category, name: e.target.value })}
       />
       <br />
       <a className='error'>{error}</a>
@@ -71,4 +72,4 @@ const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueIn
   );
 };
 
-export default EditQueueDialog;
+export default EditCategoryDialog;

@@ -5,8 +5,9 @@ import { useEffect, useState } from 'react';
 import { QueueList } from '../../models/QueueList';
 import CreateQueueDialog from '../../dialogs/CreateQueueDialog';
 import EditQueueDialog from '../../dialogs/EditQueueDialog';
+import AdminQueueEditorComponent from './AdminQueueEditorComponent';
 
-const AdminQueueEditorComponent = () => {
+const AdminQueueEditComponent = () => {
   const [queueData, setQueueData] = useState<QueueList[]>([]);
   const [isCreateQueueDialogOpen, setIsCreateQueueDialogOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -77,23 +78,26 @@ const AdminQueueEditorComponent = () => {
 
   return (
     <><div className='admin-queue-edit'>
-      <Button variant="contained" onClick={openCreateQueueDialog}>Add queue</Button>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {queueData.map((queue) => (
-            <tr key={queue._id}>
-              <td>{queue.name}</td>
-              <td><Button onClick={() => onEditQueue(queue)}>Edit</Button></td>
-              <td><Button onClick={() => onDeleteQueue(queue)}>Delete</Button></td>
+      <div className='table-container'>
+        <Button variant="contained" onClick={openCreateQueueDialog} fullWidth>Add queue</Button>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {queueData.map((queue) => (
+              <tr key={queue._id}>
+                <td>{queue.name}</td>
+                <td><Button onClick={() => onEditQueue(queue)}>Edit</Button></td>
+                <td><Button onClick={() => onDeleteQueue(queue)}>Delete</Button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <AdminQueueEditorComponent queueList={queueData}/> 
     </div>
     <CreateQueueDialog open={isCreateQueueDialogOpen} onClose={(created: boolean) => onCreateQueueClose(created)}/>
     <ConfirmationDialog open={isConfirmDialogOpen} onClose={(answer: boolean) => onDeleteDialogClose(answer)} messageInput={'Delete queue: ' + selectedQueue.name + '?'} />
@@ -102,4 +106,4 @@ const AdminQueueEditorComponent = () => {
   );
 };
   
-export default AdminQueueEditorComponent;
+export default AdminQueueEditComponent;

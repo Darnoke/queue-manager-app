@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 
-interface CreateQueueDialogProps {
+interface CreateCategoryDialogProps {
   open: boolean;
+  queueId: string;
   onClose: (created: boolean) => void;
 }
 
-const CreateQueueDialog: React.FC<CreateQueueDialogProps> = ({ open, onClose }) => {
+const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({ open, queueId, onClose }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -15,7 +16,7 @@ const CreateQueueDialog: React.FC<CreateQueueDialogProps> = ({ open, onClose }) 
   const handleCreate = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/queues', {
+      const response = await fetch(apiUrl + '/admin/queues/' + queueId + '/categories', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ const CreateQueueDialog: React.FC<CreateQueueDialogProps> = ({ open, onClose }) 
 
   return (
     <Dialog open={open} onClose={() => onClose(false)}>
-      <DialogTitle>Create Queue</DialogTitle>
+      <DialogTitle>Create Category</DialogTitle>
       <DialogContent>
         <TextField
         label="Name"
@@ -65,4 +66,4 @@ const CreateQueueDialog: React.FC<CreateQueueDialogProps> = ({ open, onClose }) 
   );
 };
 
-export default CreateQueueDialog;
+export default CreateCategoryDialog;
