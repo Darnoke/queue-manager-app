@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface CreateQueueDialogProps {
   open: boolean;
@@ -10,6 +10,8 @@ interface CreateQueueDialogProps {
 const CreateQueueDialog: React.FC<CreateQueueDialogProps> = ({ open, onClose }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+
+  const {axiosInstance} = useUser();
 
   const handleCreate = async () => {
     try {

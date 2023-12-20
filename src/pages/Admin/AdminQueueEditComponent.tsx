@@ -6,7 +6,7 @@ import { QueueList } from '../../models/QueueList';
 import CreateQueueDialog from '../../dialogs/CreateQueueDialog';
 import EditQueueDialog from '../../dialogs/EditQueueDialog';
 import AdminQueueEditorComponent from './AdminQueueEditorComponent';
-import axiosInstance from '../../services/AxiosInstance';
+import { useUser } from '../../contexts/UserContext';
 
 const AdminQueueEditComponent = () => {
   const [queueData, setQueueData] = useState<QueueList[]>([]);
@@ -14,6 +14,8 @@ const AdminQueueEditComponent = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedQueue, setSelectedQueue] = useState({} as QueueList);
+
+  const { axiosInstance } = useUser();
 
   const fetchQueueData = async () => {
     try {

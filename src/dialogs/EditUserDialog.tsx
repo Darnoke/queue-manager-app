@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, TextField, MenuItem } from '@mui/material';
 import { User } from '../models/User';
 import { UserRole } from '../enums/UserRole';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface EditUserDialogProps {
   open: boolean;
@@ -13,6 +13,8 @@ interface EditUserDialogProps {
 const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInput }) => {
   const [user, setUser] = useState<User>({} as User);
   const [error, setError] = useState('');
+
+  const {axiosInstance} = useUser();
 
   useEffect(() => {
     setUser({...userInput});

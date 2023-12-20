@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import { QueueList } from '../models/QueueList';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface EditUserDialogProps {
   open: boolean;
@@ -12,6 +12,8 @@ interface EditUserDialogProps {
 const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueInput }) => {
   const [queue, setQueue] = useState<QueueList>({} as QueueList);
   const [error, setError] = useState('');
+
+  const {axiosInstance} = useUser();
 
   useEffect(() => {
     setQueue({...queueInput});

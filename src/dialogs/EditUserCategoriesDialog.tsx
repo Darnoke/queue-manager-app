@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Checkbox } from '@mui/material';
 import { UserCategories } from '../models/UserCategories';
 import { Category } from '../models/Category';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface EditUserCategoriesDialogProps {
   open: boolean;
@@ -15,6 +15,8 @@ interface EditUserCategoriesDialogProps {
 const EditUserCategoriesDialog: React.FC<EditUserCategoriesDialogProps> = ({ open, onClose, userInput, categories, queueId }) => {
   const [user, setUser] = useState<UserCategories>({} as UserCategories);
   const [error, setError] = useState('');
+
+  const {axiosInstance} = useUser();
 
   useEffect(() => {
     if (userInput && userInput.categories) setUser({...userInput, categories: [...userInput.categories.map((category) => ({ ...category }))],});

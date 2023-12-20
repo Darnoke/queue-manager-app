@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import { Category } from '../models/Category';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface EditCategoryDialogProps {
   open: boolean;
@@ -13,6 +13,8 @@ interface EditCategoryDialogProps {
 const EditCategoryDialog: React.FC<EditCategoryDialogProps> = ({ open, onClose, categoryInput, queueId }) => {
   const [category, setCategory] = useState<Category>({} as Category);
   const [error, setError] = useState('');
+
+  const {axiosInstance} = useUser();
 
   useEffect(() => {
     setCategory({...categoryInput});

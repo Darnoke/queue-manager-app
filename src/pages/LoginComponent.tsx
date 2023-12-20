@@ -3,10 +3,9 @@ import { useUser } from '../contexts/UserContext';
 import { TextField, Button } from '@mui/material';
 import ChangePasswordDialog from '../dialogs/ChangePasswordDialog';
 import './LoginComponentStyles.scss';
-import axiosInstance from '../services/AxiosInstance';
 
 const LoginComponent = () => {
-  const { login } = useUser();
+  const { login, axiosInstance } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

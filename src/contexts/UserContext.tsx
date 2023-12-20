@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { User } from '../models/User';
 import { UserRole } from '../enums/UserRole';
 import axiosInstance from '../services/AxiosInstance';
+import { AxiosInstance } from 'axios';
 
 interface UserProviderProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ interface UserContextProps {
   user: User;
   login: () => void;
   logout: () => void;
+  axiosInstance: AxiosInstance;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -69,7 +71,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, axiosInstance }}>
       {children}
     </UserContext.Provider>
   );

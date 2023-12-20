@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import CreateUserDialog from '../../dialogs/CreateUserDialog';
 import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
 import EditUserDialog from '../../dialogs/EditUserDialog';
-import axiosInstance from '../../services/AxiosInstance';
+import { useUser } from '../../contexts/UserContext';
 
 const AdminUserTableComponent = () => {
   const [userData, setUserData] = useState<User[]>([]);
@@ -14,6 +14,8 @@ const AdminUserTableComponent = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState({} as User);
+
+  const { axiosInstance } = useUser();
 
   const fetchUserData = async () => {
     try {

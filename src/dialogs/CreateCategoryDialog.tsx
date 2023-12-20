@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface CreateCategoryDialogProps {
   open: boolean;
@@ -11,13 +11,13 @@ interface CreateCategoryDialogProps {
 const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({ open, queueId, onClose }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
+  const {axiosInstance} = useUser();
 
   const handleCreate = async () => {
     try {
       setError('');
-      await axiosInstance.post(apiUrl + '/admin/queues/' + queueId + '/categories', { name }); 
+      await axiosInstance.post('/admin/queues/' + queueId + '/categories', { name }); 
       onClose(true);
     } catch (error: any) {
       setError(error.response.data)

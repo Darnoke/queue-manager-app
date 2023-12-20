@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem } from '@mui/material';
 import { UserRole } from '../enums/UserRole';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface CreateUserDialogProps {
   open: boolean;
@@ -12,6 +12,8 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
   const [username, setUsername] = useState('');
   const [role, setRole] = useState(UserRole.Client);
   const [error, setError] = useState('');
+
+  const {axiosInstance} = useUser();
 
   const handleCreate = async () => {
     try {

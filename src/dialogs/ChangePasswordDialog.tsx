@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
-import axiosInstance from '../services/AxiosInstance';
+import { useUser } from '../contexts/UserContext';
 
 interface ChangePasswordDialogProps {
   open: boolean;
@@ -12,7 +12,8 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
   const [newPassword, setNewPassword] = useState('');
   const [firstTime, setFirstTime] = useState(false);
   const [error, setError] = useState('');
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+  const {axiosInstance} = useUser();
 
   useEffect(() => {
     if (oldPassword && oldPassword !== '') setFirstTime(true);
@@ -21,7 +22,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
   const handleSave = async () => {
     try {
       setError('');
-      const response = await axiosInstance.post(apiUrl + '/auth/change-password', { oldPassword, newPassword });
+      await axiosInstance.post('/auth/change-password', { oldPassword, newPassword });
       onClose();
     } catch (error: any) {
       setError(error.response.data);

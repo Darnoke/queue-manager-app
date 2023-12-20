@@ -8,7 +8,7 @@ import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
 import EditCategoryDialog from '../../dialogs/EditCategoryDialog';
 import { UserCategories } from '../../models/UserCategories';
 import EditUserCategoriesDialog from '../../dialogs/EditUserCategoriesDialog';
-import axiosInstance from '../../services/AxiosInstance';
+import { useUser } from '../../contexts/UserContext';
 
 interface QueueEditorProps {
   queueList : QueueList[]
@@ -28,6 +28,8 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
   const [isEditUserDialogOpen, setIsEditUserDialogOpen] = useState(false);
   const [confirmDialogMessage, setConfirmDialogMessage] = useState<string>('');
   const [confirmDialogCallback, setConfirmDialogCallback] = useState<() => void>(() => {});
+
+  const { axiosInstance } = useUser();
 
   const fetchCategories = async () => {
     try {
