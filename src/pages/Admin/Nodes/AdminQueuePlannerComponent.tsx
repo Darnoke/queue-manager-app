@@ -1,7 +1,6 @@
-import ReactFlow, { Background, Connection, Controls, EdgeChange, MiniMap, Node, NodeChange, Viewport, addEdge, useEdgesState, useNodesState, useViewport } from "reactflow";
+import ReactFlow, { Background, Connection, Controls, EdgeChange, MiniMap, Node, NodeChange, Viewport, addEdge, useEdgesState, useNodesState } from "reactflow";
 import { useCallback, useState } from "react";
 import AdminQueuePlannerSideComponent from "./AdminQueuePlannerSideComponent";
-import { nodes as initialNodes, edges as initialEdges } from './InitialElements.js';
 import QuestionNode from "./QuestionNode.js";
 import StartNode from "./StartNode.js";
 import './AdminQueuePlannerStyles.scss';
@@ -9,6 +8,9 @@ import 'reactflow/dist/style.css';
 import ConfirmationDialog from "../../../dialogs/ConfirmationDialog.js";
 import { NodeType } from "../../../enums/NodeType.js";
 import EndNode from "./EndNode.js";
+import { useUser } from "../../../contexts/UserContext.js";
+import { Category } from "../../../models/Category.js";
+import { useCategoryContext } from "../../../contexts/CategoryContext.js";
 
 const nodeTypes = {
   question: QuestionNode,
@@ -17,8 +19,8 @@ const nodeTypes = {
 };
 
 const AdminQueuePlannerComponent = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [viewport, setViewport] = useState<Viewport>();
 
   const [nodesToRemove, setNodesToRemove] = useState<NodeChange[]>([]);
@@ -27,7 +29,12 @@ const AdminQueuePlannerComponent = () => {
 
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [confirmDialogMessage, setConfirmDialogMessage] = useState('');
+
+  const [selectedQueueId, setSelectedQeueuId] = useState<string>('');
   
+  const {axiosInstance} = useUser();
+  const { updateCategories } = useCategoryContext();
+
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), []);
 
   function handleNodesChange(changes: NodeChange[]) {
@@ -114,7 +121,9 @@ const AdminQueuePlannerComponent = () => {
           type: 'end',
           position: { x: -(viewport?.x ?? 0), y: -(viewport?.y ?? 0) },
           dragHandle: '.custom-drag-handle',
-          data: {},
+          data: {
+            categoryId: 'empty',
+          },
         }
         break;
       }
@@ -146,10 +155,33 @@ const AdminQueuePlannerComponent = () => {
     return nextId.toString();
   }
 
+  async function handleQueueUpdate(queueId: string) {
+    setSelectedQeueuId(queueId);
+    try {
+      const response = await axiosInstance.get('/admin/queues/' + queueId + '/survey'); 
+      setNodes(response.data.survey.nodes);
+      setEdges(response.data.survey.edges);
+      updateCategories(response.data.availableCategories);
+    } catch (error: any) {
+      console.error('Error while fetching survey data', error.response.data);
+    }
+    
+  }
+
+  async function handleSave() {
+    if (!selectedQueueId) return;
+    const survey = { nodes, edges }
+    try {
+      await axiosInstance.put('/admin/queues/' + selectedQueueId + '/survey', { survey }); 
+    } catch (error: any) {
+      console.error('Error while saving survey data', error.response.data);
+    }
+  }
+
   return (
     <>
     <div className="admin-queue-planner-content">
-      <AdminQueuePlannerSideComponent addNode={handleAddNode}/>
+      <AdminQueuePlannerSideComponent addNode={handleAddNode} queueUpdate={handleQueueUpdate} saveEvent={handleSave} queueId={selectedQueueId}/>
       <div>
         <ReactFlow
           nodes={nodes}

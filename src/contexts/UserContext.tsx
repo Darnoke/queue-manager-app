@@ -58,6 +58,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         return response;
       },
       (error) => {
+        console.log(error.response)
         if (user.username !== '' && error.response && error.response.status === 401) {
           logout();
           setUser({ _id: '', username: '', role: UserRole.None });

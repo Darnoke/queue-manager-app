@@ -106,16 +106,20 @@
     }
 
     .start-node__body {
-        padding: 1rem;
+      padding: 1rem;
     }
 
     .react-flow__edge-path {
-        stroke-width: 5;
+      stroke-width: 5;
     }
 
     .side-container {
-        display: flex;
-        gap: 0.5rem;
-        flex-direction: column;
+      display: flex;
+      gap: 0.5rem;
+      flex-direction: column;
+
+      .end-button {
+        margin-top: auto;
+      }
     }
 }
