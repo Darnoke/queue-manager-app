@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import CreateUserDialog from '../../dialogs/CreateUserDialog';
 import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
 import EditUserDialog from '../../dialogs/EditUserDialog';
+import axiosInstance from '../../services/AxiosInstance';
 
 const AdminUserTableComponent = () => {
   const [userData, setUserData] = useState<User[]>([]);
@@ -13,32 +14,28 @@ const AdminUserTableComponent = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState({} as User);
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(apiUrl + '/admin/users', {credentials: 'include'});
-      const data = await response.json();
+      const response = await axiosInstance.get('/admin/users');
+      const data = response.data;
       setUserData(data);
       setLoading(false);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
       setLoading(false);
     }
-  }
-
+  };
+  
   const deleteUser = async (id: string) => {
     try {
       setSelectedUser({} as User);
-      const response = await fetch(apiUrl + '/admin/users/' + id, {method: 'DELETE', credentials: 'include'});
-
-      if (response.ok) {
-        fetchUserData();
-      }
-    } catch (error) { 
-      console.error('Error while deleting user:', error);
+      await axiosInstance.delete(`/admin/users/${id}`);
+      fetchUserData();
+    } catch (error: any) {
+      console.error('Error while deleting user:', error.response.data);
     }
-  }
+  };
 
   useEffect(() => {
     // Use an IIFE (Immediately Invoked Function Expression) to define the async function

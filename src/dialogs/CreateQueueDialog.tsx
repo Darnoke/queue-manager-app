@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import axiosInstance from '../services/AxiosInstance';
 
 interface CreateQueueDialogProps {
   open: boolean;
@@ -9,29 +10,16 @@ interface CreateQueueDialogProps {
 const CreateQueueDialog: React.FC<CreateQueueDialogProps> = ({ open, onClose }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
 
   const handleCreate = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/queues', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name }),
-        credentials: 'include',
-      });
-      if (response.ok) {
-        onClose(true);
-      } else {
-        setError(await response.text());
-        console.error('Register failed:', response.statusText);
-      }
-    } catch (error) {
-        console.error('Error during registration:', error);
-      }
+      await axiosInstance.post('/admin/queues', { name });
+      onClose(true);
+    } catch (error: any) {
+      setError(error.response.data);
+      console.error('Error during registration:', error.response.data);
+    }
   };
 
   useEffect(() => {

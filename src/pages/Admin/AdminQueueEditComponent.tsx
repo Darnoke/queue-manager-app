@@ -6,6 +6,7 @@ import { QueueList } from '../../models/QueueList';
 import CreateQueueDialog from '../../dialogs/CreateQueueDialog';
 import EditQueueDialog from '../../dialogs/EditQueueDialog';
 import AdminQueueEditorComponent from './AdminQueueEditorComponent';
+import axiosInstance from '../../services/AxiosInstance';
 
 const AdminQueueEditComponent = () => {
   const [queueData, setQueueData] = useState<QueueList[]>([]);
@@ -13,28 +14,25 @@ const AdminQueueEditComponent = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedQueue, setSelectedQueue] = useState({} as QueueList);
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   const fetchQueueData = async () => {
     try {
-      const response = await fetch(apiUrl + '/admin/queues', {credentials: 'include'});
-      const data = await response.json();
+      const response = await axiosInstance.get('/admin/queues');
+      const data = await response.data;
       setQueueData(data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 
   const deleteQueue = async (queue_id: string) => {
     try {
       setSelectedQueue({} as QueueList);
-      const response = await fetch(apiUrl + '/admin/queues/' + queue_id, {method: 'DELETE', credentials: 'include'});
+      await axiosInstance.delete('/admin/queues/' + queue_id);
 
-      if (response.ok) {
-        fetchQueueData();
-      }
-    } catch (error) { 
-      console.error('Error while deleting user:', error);
+      fetchQueueData();
+    } catch (error: any) { 
+      console.error('Error while deleting user:', error.response.data);
     }
   }
 

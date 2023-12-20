@@ -3,9 +3,9 @@ import { useUser } from '../contexts/UserContext';
 import { TextField, Button } from '@mui/material';
 import ChangePasswordDialog from '../dialogs/ChangePasswordDialog';
 import './LoginComponentStyles.scss';
+import axiosInstance from '../services/AxiosInstance';
 
 const LoginComponent = () => {
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
   const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -15,28 +15,17 @@ const LoginComponent = () => {
   const handleLogin = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-        credentials: 'include',
-      });
+      const response = await axiosInstance.post('/auth/login', { username, password });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.changePassword) {
-          setChangePasswordDialogOpen(true);
-        } else {
-          login();
-        }
+      const data = response.data;
+      if (data.changePassword) {
+        setChangePasswordDialogOpen(true);
       } else {
-        setError(await response.text());
-        console.error('Login failed:', response.statusText);
+        login();
       }
-    } catch (error) {
-      console.error('Error during login:', error);
+    } catch (error: any) {
+      setError(error.response.data);
+      console.error('Error during login:', error.response.data);
     }
   };
 

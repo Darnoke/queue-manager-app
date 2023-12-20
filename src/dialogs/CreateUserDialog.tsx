@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem } from '@mui/material';
 import { UserRole } from '../enums/UserRole';
+import axiosInstance from '../services/AxiosInstance';
 
 interface CreateUserDialogProps {
   open: boolean;
@@ -11,29 +12,16 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
   const [username, setUsername] = useState('');
   const [role, setRole] = useState(UserRole.Client);
   const [error, setError] = useState('');
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
 
   const handleCreate = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/users/register', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, role }),
-        credentials: 'include',
-      });
-      if (response.ok) {
-        onClose(true);
-      } else {
-        setError(await response.text());
-        console.error('Register failed:', response.statusText);
-      }
-    } catch (error) {
-        console.error('Error during registration:', error);
-      }
+      await axiosInstance.post('/admin/users/register', { username, role });
+      onClose(true);
+    } catch (error: any) {
+      setError(error.response.data)
+      console.error('Error during registration:', error.response.data);
+    }
   };
 
   useEffect(() => {

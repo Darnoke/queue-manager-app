@@ -8,6 +8,7 @@ import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
 import EditCategoryDialog from '../../dialogs/EditCategoryDialog';
 import { UserCategories } from '../../models/UserCategories';
 import EditUserCategoriesDialog from '../../dialogs/EditUserCategoriesDialog';
+import axiosInstance from '../../services/AxiosInstance';
 
 interface QueueEditorProps {
   queueList : QueueList[]
@@ -27,54 +28,51 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
   const [isEditUserDialogOpen, setIsEditUserDialogOpen] = useState(false);
   const [confirmDialogMessage, setConfirmDialogMessage] = useState<string>('');
   const [confirmDialogCallback, setConfirmDialogCallback] = useState<() => void>(() => {});
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(apiUrl + '/admin/queues/' + selectedQueue + '/categories', {credentials: 'include'});
-      const data = await response.json();
+      const response = await axiosInstance.get('/admin/queues/' + selectedQueue + '/categories');
+      const data = await response.data;
       setCategories(data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(apiUrl + '/admin/queues/' + selectedQueue + '/users', {credentials: 'include'});
-      const data = await response.json();
+      const response = await axiosInstance.get('/admin/queues/' + selectedQueue + '/users');
+      const data = response.data;
       setUsers(data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 
   const fetchAvailableUsers = async () => {
     try {
-      const response = await fetch(apiUrl + '/admin/queues/' + selectedQueue + '/available-users', {credentials: 'include'});
-      const data = await response.json();
+      const response = await axiosInstance.get('/admin/queues/' + selectedQueue + '/available-users');
+      const data = await response.data;
       setAvailableUsers(data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 
   const handleQueueChange = (event: SelectChangeEvent<string>) => {
     const selectedQueueId = event.target.value;
     setSelectedQueue(selectedQueueId);
-    // You can perform any additional actions when the queue is changed
   };
 
   const addSelectedUser = async () => {
     if (selectedUserToAdd === '') return;
     try {
-      const response = await fetch(apiUrl + '/admin/queues/' + selectedQueue + '/users/' + selectedUserToAdd, { method: 'POST', credentials: 'include' });
-      await response.json();
+      await axiosInstance.post('/admin/queues/' + selectedQueue + '/users/' + selectedUserToAdd);
       setSelectedUserToAdd('');
       fetchUsers();
       fetchAvailableUsers();
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 
@@ -86,22 +84,20 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
 
   const deleteUser = async (id: string) => {
     try {
-      const response = await fetch(apiUrl + '/admin/queues/' + selectedQueue + '/users/' + id, { method: 'DELETE', credentials: 'include' });
-      await response.json();
+      await axiosInstance.delete('/admin/queues/' + selectedQueue + '/users/' + id);
       fetchUsers();
       fetchAvailableUsers();
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 
   const deleteCategory = async (id: string) => {
     try {
-      const response = await fetch(apiUrl + '/admin/queues/' + selectedQueue + '/categories/' + id, { method: 'DELETE', credentials: 'include' });
-      await response.json();
+      await axiosInstance.delete('/admin/queues/' + selectedQueue + '/categories/' + id);
       fetchCategories();
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   }
 

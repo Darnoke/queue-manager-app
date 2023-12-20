@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, TextField, MenuItem } from '@mui/material';
 import { User } from '../models/User';
 import { UserRole } from '../enums/UserRole';
+import axiosInstance from '../services/AxiosInstance';
 
 interface EditUserDialogProps {
   open: boolean;
@@ -12,7 +13,6 @@ interface EditUserDialogProps {
 const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInput }) => {
   const [user, setUser] = useState<User>({} as User);
   const [error, setError] = useState('');
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   useEffect(() => {
     setUser({...userInput});
@@ -21,23 +21,12 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInpu
   const handleEdit = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/users/' + user._id, {
-        method: 'PUT',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify( {...user} ),
-        credentials: 'include',
-      });
-      if (response.ok) {
-        onClose(true);
-      } else {
-        setError(await response.text());
-        console.error('Edit failed:', response.statusText);
-      }
-    } catch (error) {
-        console.error('Error during registration:', error);
-      }
+      await axiosInstance.put('/admin/users/' + user._id, {...user});
+      onClose(true);
+    } catch (error: any) {
+      setError(error.response.data);
+      console.error('Error during registration:', error.response.data);
+    }
   };
 
   const closeDialog = () => {

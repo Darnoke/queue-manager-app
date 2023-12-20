@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import axiosInstance from '../services/AxiosInstance';
 
 interface ChangePasswordDialogProps {
   open: boolean;
@@ -20,23 +21,12 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
   const handleSave = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/auth/change-password', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ oldPassword, newPassword }),
-        credentials: 'include',
-      });
-      if (response.ok) {
-        onClose();
-      } else {
-        setError(await response.text());
-        console.error('Password change failed:', response.statusText);
-      }
-    } catch (error) {
-        console.error('Error during changing password:', error);
-      }
+      const response = await axiosInstance.post(apiUrl + '/auth/change-password', { oldPassword, newPassword });
+      onClose();
+    } catch (error: any) {
+      setError(error.response.data);
+      console.error('Error during changing password:', error.response.data);
+    }
   };
 
   return (

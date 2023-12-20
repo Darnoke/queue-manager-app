@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../models/User';
 import { UserRole } from '../enums/UserRole';
+import axiosInstance from '../services/AxiosInstance';
 
 interface UserProviderProps {
   children: ReactNode;
@@ -16,7 +17,6 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User>({ _id: '', username: '', role: UserRole.None });
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   const login = () => {
     fetchUserData();
@@ -28,33 +28,43 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(apiUrl + '/auth/user', {credentials: 'include',});
+      const response = await axiosInstance.get('/auth/user');
 
       if (response.status === 206) { // User not logged in yet
         return;
       }
-      const userData = await response.json();
+      const userData = await response.data;
       setUser(userData);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    } catch (error: any) {
+      console.error('Error fetching user data:', error.response.data);
     }
   };
 
   const fetchLogout = async () => {
     try {
-      const response = await fetch(apiUrl + '/auth/logout', {credentials: 'include',});
-      if (response.ok || response.status === 304) {
-        console.log('Logout successful');
-        setUser({ _id: '', username: '', role: UserRole.None });
-      } else {
-        console.error('Logout failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error during logout:', error);
+      await axiosInstance.get('/auth/logout');
+      console.log('Logout successful');
+      setUser({ _id: '', username: '', role: UserRole.None });
+    } catch (error: any) {
+      console.error('Error during logout:', error.response.data);
     }
   }
 
   useEffect(() => {
+    axiosInstance.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        if (user.username !== '' && error.response && error.response.status === 401) {
+          logout();
+          setUser({ _id: '', username: '', role: UserRole.None });
+        }
+        return Promise.reject(error);
+      }
+    );
+
+
     fetchUserData();
   }, []);
 
