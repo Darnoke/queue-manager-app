@@ -12,7 +12,6 @@ const AdminUserTableComponent = () => {
   const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedUsername, setSelectedUsername] = useState('');
   const [selectedUser, setSelectedUser] = useState({} as User);
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -28,10 +27,10 @@ const AdminUserTableComponent = () => {
     }
   }
 
-  const deleteUser = async (username: string) => {
+  const deleteUser = async (id: string) => {
     try {
-      setSelectedUsername('');
-      const response = await fetch(apiUrl + '/admin/users/' + username, {method: 'DELETE', credentials: 'include'});
+      setSelectedUser({} as User);
+      const response = await fetch(apiUrl + '/admin/users/' + id, {method: 'DELETE', credentials: 'include'});
 
       if (response.ok) {
         fetchUserData();
@@ -59,11 +58,11 @@ const AdminUserTableComponent = () => {
 
   const onDeleteDialogClose = (answer: boolean) => {
     setIsConfirmDialogOpen(false);
-    if (answer) deleteUser(selectedUsername);
+    if (answer) deleteUser(selectedUser._id);
   }
 
-  const onDeleteUser = (username: string) => {
-    setSelectedUsername(username);
+  const onDeleteUser = (user: User) => {
+    setSelectedUser(user);
     setIsConfirmDialogOpen(true);
   }
 
@@ -97,14 +96,14 @@ const AdminUserTableComponent = () => {
                     <td>{user.username}</td>
                     <td>{user.role}</td>
                     <td><Button onClick={() => onEditUser(user)}>Edit</Button></td>
-                    <td><Button onClick={() => onDeleteUser(user.username)}>Delete</Button></td>
+                    <td><Button onClick={() => onDeleteUser(user)}>Delete</Button></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <CreateUserDialog open={isCreateUserDialogOpen} onClose={(param: boolean) => onCreateUserClose(param)}/>
-          <ConfirmationDialog open={isConfirmDialogOpen} onClose={(answer: boolean) => onDeleteDialogClose(answer)} messageInput={'Delete user: ' + selectedUsername + '?'}/>
+          <ConfirmationDialog open={isConfirmDialogOpen} onClose={(answer: boolean) => onDeleteDialogClose(answer)} messageInput={'Delete user: ' + selectedUser.username + '?'}/>
           <EditUserDialog open={isEditDialogOpen} onClose={(refresh: boolean) => onEditDialogClose(refresh)} userInput={selectedUser}/>
           </>
       )}

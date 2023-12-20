@@ -11,19 +11,17 @@ interface EditUserDialogProps {
 
 const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInput }) => {
   const [user, setUser] = useState<User>({} as User);
-  const [username, setUsername] = useState<string>('');
   const [error, setError] = useState('');
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
   useEffect(() => {
     setUser({...userInput});
-    setUsername(userInput.username);
   }, [userInput]);
 
   const handleEdit = async () => {
     try {
       setError('');
-      const response = await fetch(apiUrl + '/admin/users/' + username, {
+      const response = await fetch(apiUrl + '/admin/users/' + user._id, {
         method: 'PUT',
         headers: {
         'Content-Type': 'application/json',
