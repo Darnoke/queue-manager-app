@@ -147,7 +147,7 @@ const AdminQueueEditorComponent: React.FC<QueueEditorProps> = ({ queueList }) =>
   }, [selectedQueue]);
 
   return (
-    <div className='table-container'>
+    <div className='table-container container-66'>
       <FormControl fullWidth className='m-b-10'>
         <InputLabel id="queueSelectLabel">Select a Queue</InputLabel>
         <Select

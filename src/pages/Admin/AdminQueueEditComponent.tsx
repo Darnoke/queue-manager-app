@@ -78,7 +78,7 @@ const AdminQueueEditComponent = () => {
 
   return (
     <><div className='admin-queue-edit'>
-      <div className='table-container'>
+      <div className='table-container container-33'>
         <Button variant="contained" onClick={openCreateQueueDialog} fullWidth>Add queue</Button>
         <table>
           <thead>

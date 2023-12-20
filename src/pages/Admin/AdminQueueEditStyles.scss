@@ -24,6 +24,14 @@
     }
   }
 
+  .container-33 {
+    width: calc(33% - 5px);
+  }
+
+  .container-66 {
+    width: calc(66% - 5px);
+  }
+
   .queue-edit {
     display: flex;
     gap: 10px
