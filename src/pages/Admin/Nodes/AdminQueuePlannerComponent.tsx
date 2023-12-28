@@ -35,7 +35,24 @@ const AdminQueuePlannerComponent = () => {
   const {axiosInstance} = useUser();
   const { updateCategories } = useCategoryContext();
 
-  const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), []);
+  const onConnect = useCallback((params: Connection) => { // remove old edge and add new one
+    const sourceId = params.source;
+    if (params.sourceHandle === sourceId) { // non question block
+      const oldEdge = edges.find(edge => edge.source === sourceId);
+  
+      if (oldEdge) {
+        setEdges(edges => edges.filter(edge => edge !== oldEdge));
+      } 
+    } else { // question block
+      const handleId = params.sourceHandle;
+      const oldEdge = edges.find(edge => edge.source === sourceId && edge.sourceHandle === handleId);
+
+      if (oldEdge) {
+        setEdges(edges => edges.filter(edge => edge !== oldEdge));
+      } 
+    }
+    setEdges(eds => addEdge(params, eds));
+  }, [edges]);
 
   function handleNodesChange(changes: NodeChange[]) {
     const nextChanges = changes.reduce((acc, change) => {
