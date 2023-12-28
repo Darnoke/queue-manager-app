@@ -37,6 +37,16 @@ const AdminQueuePlannerComponent = () => {
 
   const onConnect = useCallback((params: Connection) => { // remove old edge and add new one
     const sourceId = params.source;
+    const targetId = params.target;
+  
+    const sourceNode = nodes.find(node => node.id === sourceId);
+    const targetNode = nodes.find(node => node.id === targetId);
+  
+    // If the source node is 'start' and the target node is 'end', don't add the edge
+    if (sourceNode?.type === 'start' && targetNode?.type === 'end') {
+      return;
+    }
+
     if (params.sourceHandle === sourceId) { // non question block
       const oldEdge = edges.find(edge => edge.source === sourceId);
   
