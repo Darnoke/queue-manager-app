@@ -1,7 +1,13 @@
-body {
+html, body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     box-sizing: border-box;
+    height: 100%;
+}
+
+#root {
+  height: 100%;
+  min-height: 100vh;
 }
 
 .error {

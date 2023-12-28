@@ -5,6 +5,7 @@ import { UserRole } from "../enums/UserRole";
 import RedirectToLogin from "./RedirectToLogin";
 import WorkerDashboardComponent from "../pages/WorkerDashboardComponent";
 import AdminRoutes from "./AdminRoutes";
+import SurveyDashboardComponent from "../pages/Survey/SurveyDashboardComponent";
 
 const AppRouter = () => {
 
@@ -26,6 +27,7 @@ const AppRouter = () => {
       { user?.role === UserRole.None &&
         <Route path="/login" element={<LoginComponent />}/>
       }
+      <Route path="/survey/*" element={<SurveyDashboardComponent/>}/>
       <Route path="/" element={<RedirectToLogin />} />
     </Routes>
   );

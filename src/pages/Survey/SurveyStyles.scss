@@ -1,0 +1,44 @@
+.survey-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: $palette-4;
+
+  .start-button {
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: $palette-1;
+    color: $palette-4;
+  }
+
+  .question-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    width: 50%;
+    background-color: $palette-2;
+    color: $palette-4;
+    border-radius: 0.5rem;
+
+    .answers-box {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 3rem;
+    }
+
+    .answer-button {
+      font-size: 1rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      width: 50%;
+    }
+  }
+}

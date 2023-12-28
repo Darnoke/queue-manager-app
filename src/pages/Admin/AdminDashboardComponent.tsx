@@ -5,7 +5,7 @@ import AdminQueueEditComponent from './AdminQueueEditComponent';
 import AdminQueuePlannerWrapComponent from './Nodes/AdminQueuePlannerWrapComponent';
 const AdminDashboardComponent = () => {
   return (
-    <div className="container">
+    <div>
       <AdminHeaderComponent/>
       <Routes>
         <Route path="/users" element={<AdminUserTableComponent />} />

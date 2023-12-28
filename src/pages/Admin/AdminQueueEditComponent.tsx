@@ -14,6 +14,7 @@ const AdminQueueEditComponent = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedQueue, setSelectedQueue] = useState({} as QueueList);
+  const [copySuccess, setCopySuccess] = useState<{ id: string, message: string }>({ id: '', message: '' });
 
   const { axiosInstance } = useUser();
 
@@ -37,6 +38,18 @@ const AdminQueueEditComponent = () => {
       console.error('Error while deleting user:', error.response.data);
     }
   }
+
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess({ id: id, message: 'Copied!' });
+    } catch (err) {
+      setCopySuccess({ id: id, message: 'Failed to copy text' });
+    }
+    setTimeout(() => {
+      setCopySuccess({ id: '', message: '' });
+    }, 3000);
+  };
 
   useEffect(() => {
     // Use an IIFE (Immediately Invoked Function Expression) to define the async function
@@ -92,6 +105,12 @@ const AdminQueueEditComponent = () => {
                 <td>{queue.name}</td>
                 <td><Button onClick={() => onEditQueue(queue)}>Edit</Button></td>
                 <td><Button onClick={() => onDeleteQueue(queue)}>Delete</Button></td>
+                <td>
+                  <Button onClick={() => copyToClipboard(`http://localhost:4000/survey/start/${queue._id}`, queue._id)}>
+                    Copy Link
+                  </Button>
+                  {copySuccess.id === queue._id && copySuccess.message}
+                </td>
               </tr>
             ))}
           </tbody>
