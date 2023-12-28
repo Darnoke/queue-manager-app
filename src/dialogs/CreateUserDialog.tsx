@@ -10,7 +10,7 @@ interface CreateUserDialogProps {
 
 const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) => {
   const [username, setUsername] = useState('');
-  const [role, setRole] = useState(UserRole.Client);
+  const [role, setRole] = useState(UserRole.Worker);
   const [error, setError] = useState('');
 
   const {axiosInstance} = useUser();
