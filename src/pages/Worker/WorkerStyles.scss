@@ -1,0 +1,22 @@
+.worker-content {
+  box-sizing: border-box;
+  padding: 2rem;
+  font-size: 1rem;
+  height: calc(100vh - 7rem);
+  width: 100%;
+  background-color: $palette-4;
+  overflow: auto;
+
+  .queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    a {
+      text-decoration: none;
+      color: $palette-1;
+      &:hover {
+        color: $palette-2;
+      }
+    }
+  }
+}

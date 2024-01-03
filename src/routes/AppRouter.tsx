@@ -3,9 +3,9 @@ import { useUser } from '../contexts/UserContext';
 import LoginComponent from "../pages/LoginComponent";
 import { UserRole } from "../enums/UserRole";
 import RedirectToLogin from "./RedirectToLogin";
-import WorkerDashboardComponent from "../pages/WorkerDashboardComponent";
 import AdminRoutes from "./AdminRoutes";
 import SurveyDashboardComponent from "../pages/Survey/SurveyDashboardComponent";
+import WorkerRoutes from "./WorkerRoutes";
 
 const AppRouter = () => {
 
@@ -20,9 +20,9 @@ const AppRouter = () => {
       )}
 
       { user?.role === UserRole.Worker ? (
-        <Route path="/worker" element={ <WorkerDashboardComponent/> }></Route>
+        <Route path="/*" element={ <WorkerRoutes/> }></Route>
       ) : (
-        <Route path="/worker" element={<RedirectToLogin />} />
+        <Route path="/worker/*" element={<RedirectToLogin />} />
       )}
       { user?.role === UserRole.None &&
         <Route path="/login" element={<LoginComponent />}/>

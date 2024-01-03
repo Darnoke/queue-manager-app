@@ -1,0 +1,33 @@
+.worker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    height: 5rem;
+    background-color: $palette-3;
+    color: $font-light;
+    font-size: 1.5rem;
+
+    button {
+        font-size: 1.5rem;
+    }
+
+    a {
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: $font-light;
+
+        &:hover {
+            color: darken($color: $font-light, $amount: 15)
+        }
+    }
+
+    nav {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        gap: 3rem;
+    }
+}
