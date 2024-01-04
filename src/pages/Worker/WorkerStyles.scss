@@ -7,6 +7,10 @@
   background-color: $palette-4;
   overflow: auto;
 
+  .managment-container {
+    display: flex;
+  }
+
   .queue-list {
     display: flex;
     flex-direction: column;
@@ -18,5 +22,20 @@
         color: $palette-2;
       }
     }
+  }
+
+  .container-50 {
+    width: 50%;
+    height: 100%;
+  }
+
+  .buttons-box {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .take-button {
+    color: green;
   }
 }
