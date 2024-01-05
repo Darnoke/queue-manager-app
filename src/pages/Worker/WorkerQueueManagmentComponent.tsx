@@ -20,11 +20,10 @@ const WorkerQueueManagmentComponent: React.FC = () => {
       query: {
         queueId: queueId,
         userId: user._id
-      }
+      },
+      withCredentials: true
     });
     setSocket(socket);
-
-    console.log(socket)
 
     // Event listener for receiving clients from the server
     socket.on('on_connect', (newClients: Client[]) => {
@@ -75,7 +74,7 @@ const WorkerQueueManagmentComponent: React.FC = () => {
           <thead>
           <tr>
             <th>
-              Assigned Number
+              Num
             </th>
             <th>
               Category
