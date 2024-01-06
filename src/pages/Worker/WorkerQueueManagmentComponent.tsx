@@ -4,6 +4,7 @@ import { Client } from '../../models/Client';
 import { useParams } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
 import { Button } from '@mui/material';
+import { CategoryStatus } from '../../enums/CategoryStatus';
 import { ClientStatus } from '../../enums/ClientStatus';
 
 const WorkerQueueManagmentComponent: React.FC = () => {
@@ -66,6 +67,12 @@ const WorkerQueueManagmentComponent: React.FC = () => {
     return !!currentClient;
   }
 
+  const themeColor = {
+    [CategoryStatus.Good]: 'good-theme',
+    [CategoryStatus.Medium]: 'medium-theme',
+    [CategoryStatus.Bad]: 'bad-theme',
+  };
+
   return (
     <div className='managment-container'>
       <div className='container-50'>
@@ -91,7 +98,7 @@ const WorkerQueueManagmentComponent: React.FC = () => {
           {clients.map(client => (
             <tr key={client._id}>
               <td>{client.assignedNumber}</td>
-              <td>{client.category.name}</td>
+              <td className={themeColor[client?.categoryStatus || 'medium']}>{client.category.name}</td>
               <td>{new Date(client.createdAt).toLocaleTimeString()}</td>
               <td>{client.status}</td>
               <td>{client.status === ClientStatus.Waiting && <Button onClick={() => takeClient(client)} disabled={isTakeDisabled()} className='take-button'>Take</Button>}</td>

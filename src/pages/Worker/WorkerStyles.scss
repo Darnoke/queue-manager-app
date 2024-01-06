@@ -28,6 +28,21 @@
     th, td {
       padding: 0 0.5rem;
     }
+
+    .bad-theme {
+      background-color: red;
+      color: white;
+    }
+
+    .medium-theme {
+      background-color: yellow;
+      color: black;
+    }
+
+    .good-theme {
+      background-color: green;
+      color: white;
+    }
   }
 
   .container-50 {

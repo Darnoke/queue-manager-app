@@ -160,7 +160,7 @@ const AdminQueuePlannerComponent = () => {
         createdNode = {
           id: getNextFreeId(),
           type: 'start',
-          position: { x: -(viewport?.x ?? 0), y: -(viewport?.y ?? 0) },
+          position: { x: -(viewport?.x ?? 0) - 400, y: -(viewport?.y ?? 0) - 400 },
           data: {},
         }
         break;
