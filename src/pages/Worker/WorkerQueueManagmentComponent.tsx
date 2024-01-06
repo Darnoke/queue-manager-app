@@ -6,6 +6,7 @@ import io, { Socket } from 'socket.io-client';
 import { Button } from '@mui/material';
 import { CategoryStatus } from '../../enums/CategoryStatus';
 import { ClientStatus } from '../../enums/ClientStatus';
+import TimeCounter from './TimeCounterComponent';
 
 const WorkerQueueManagmentComponent: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
@@ -87,7 +88,7 @@ const WorkerQueueManagmentComponent: React.FC = () => {
               Category
             </th>
             <th>
-              Created at
+              Time passed
             </th>
             <th>
               Status
@@ -99,7 +100,7 @@ const WorkerQueueManagmentComponent: React.FC = () => {
             <tr key={client._id}>
               <td>{client.assignedNumber}</td>
               <td className={themeColor[client?.categoryStatus || 'medium']}>{client.category.name}</td>
-              <td>{new Date(client.createdAt).toLocaleTimeString()}</td>
+              <td><TimeCounter createdAt={client.createdAt} /></td>
               <td>{client.status}</td>
               <td>{client.status === ClientStatus.Waiting && <Button onClick={() => takeClient(client)} disabled={isTakeDisabled()} className='take-button'>Take</Button>}</td>
             </tr>

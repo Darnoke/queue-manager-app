@@ -6,7 +6,7 @@ export interface Client {
   _id: string,
   assignedNumber: number,
   category: Category,
-  createdAt: Date,
+  createdAt: string,
   status: ClientStatus,
   categoryStatus?: CategoryStatus,
   score?: number
