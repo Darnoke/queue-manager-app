@@ -92,10 +92,15 @@ const WorkerQueueManagmentComponent: React.FC = () => {
     <div className='managment-container'>
       <div className='container-50'>
         <Button onClick={() => copyToClipboard(`http://localhost:4000/watch/worker/${workerId}`)}>
-          Copy Screen Link
+          Copy Worker Screen Link
         </Button>
-        <h3>Clients</h3>
+        <Button onClick={() => copyToClipboard(`http://localhost:4000/watch/queue/${queueId}`)}>
+          Copy Queue Screen Link
+        </Button>
+        <br />
         {copySuccess}
+        <h3>Clients</h3>
+        <div className='table-container'>
         <table className='client-list'>
           <thead>
           <tr>
@@ -125,8 +130,9 @@ const WorkerQueueManagmentComponent: React.FC = () => {
           ))}
           </tbody>
         </table>
+        </div>
       </div>
-      <div className='container-50'> 
+      <div className='container-50 p-l-rem5'> 
         <h3>Current Client: {currentClient?.assignedNumber || 'none'}</h3>
         {currentClient && ( <>
         <p>Category: {currentClient.category.name}</p>

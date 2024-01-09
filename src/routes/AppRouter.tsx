@@ -7,6 +7,7 @@ import AdminRoutes from "./AdminRoutes";
 import SurveyDashboardComponent from "../pages/Survey/SurveyDashboardComponent";
 import WorkerRoutes from "./WorkerRoutes";
 import WorkerWatchComponent from "../pages/Worker/WorkerWatchComponent";
+import QueueWatchComponent from "../pages/Worker/QueueWatchComponent";
 
 const AppRouter = () => {
 
@@ -30,6 +31,7 @@ const AppRouter = () => {
       }
       <Route path="/survey/*" element={<SurveyDashboardComponent/>}/>
       <Route path="/watch/worker/:workerId" element={<WorkerWatchComponent/>}/>
+      <Route path="/watch/queue/:queueId" element={<QueueWatchComponent/>}/>
       <Route path="/" element={<RedirectToLogin />} />
     </Routes>
   );

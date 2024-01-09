@@ -14,8 +14,7 @@ const WorkerWatchComponent = () => {
     const socket = io('http://localhost:3000', {
       query: {
         workerToWatchId: workerId,
-      },
-      withCredentials: true
+      }
     });
     setSocket(socket);
 

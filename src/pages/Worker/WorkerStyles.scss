@@ -24,6 +24,11 @@
     }
   }
 
+  .table-container {
+    max-height: calc(100vh - 18rem);
+    overflow: auto;
+  }
+
   .client-list {
     th, td {
       padding: 0 0.5rem;
@@ -74,6 +79,27 @@
 
   .number {
     font-size: 20rem;
+    font-weight: bold;
+    color: green;
+  }
+}
+
+.queue-watch {
+  display: grid;
+  grid-auto-rows: 1fr; /* Each row takes equal height */
+  grid-auto-flow: column dense; /* Add new items in columns */
+  grid-template-rows: repeat(5, 1fr); /* Create 5 rows */
+  gap: 0 10rem;
+
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: $palette-1;
+  background-color: $palette-4;
+
+  .number {
+    font-size: 6.9rem;
     font-weight: bold;
     color: green;
   }
