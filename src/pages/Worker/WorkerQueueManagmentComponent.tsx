@@ -12,6 +12,8 @@ const WorkerQueueManagmentComponent: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [currentClient, setCurrentClient] = useState<Client | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [workerId, setWorkerId] = useState<string>('');
+  const [copySuccess, setCopySuccess] = useState<string>('');
 
   const { queueId } = useParams();
   const { user } = useUser();
@@ -28,9 +30,9 @@ const WorkerQueueManagmentComponent: React.FC = () => {
     setSocket(socket);
 
     // Event listener for receiving clients from the server
-    socket.on('on_connect', (newClients: Client[]) => {
-      console.log(newClients)
-      setClients(newClients);
+    socket.on('on_connect', (workerId: string) => {
+      setWorkerId(workerId);
+      setCurrentClient(null);
     });
 
     socket.on('queue_update', (clients: Client[]) => {
@@ -68,6 +70,18 @@ const WorkerQueueManagmentComponent: React.FC = () => {
     return !!currentClient;
   }
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess('Copied!');
+    } catch (err) {
+      setCopySuccess('Failed to copy text');
+    }
+    setTimeout(() => {
+      setCopySuccess('');
+    }, 3000);
+  };
+
   const themeColor = {
     [CategoryStatus.Good]: 'good-theme',
     [CategoryStatus.Medium]: 'medium-theme',
@@ -77,7 +91,11 @@ const WorkerQueueManagmentComponent: React.FC = () => {
   return (
     <div className='managment-container'>
       <div className='container-50'>
+        <Button onClick={() => copyToClipboard(`http://localhost:4000/watch/worker/${workerId}`)}>
+          Copy Screen Link
+        </Button>
         <h3>Clients</h3>
+        {copySuccess}
         <table className='client-list'>
           <thead>
           <tr>

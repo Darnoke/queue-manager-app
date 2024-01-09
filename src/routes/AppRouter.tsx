@@ -6,6 +6,7 @@ import RedirectToLogin from "./RedirectToLogin";
 import AdminRoutes from "./AdminRoutes";
 import SurveyDashboardComponent from "../pages/Survey/SurveyDashboardComponent";
 import WorkerRoutes from "./WorkerRoutes";
+import WorkerWatchComponent from "../pages/Worker/WorkerWatchComponent";
 
 const AppRouter = () => {
 
@@ -28,6 +29,7 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginComponent />}/>
       }
       <Route path="/survey/*" element={<SurveyDashboardComponent/>}/>
+      <Route path="/watch/worker/:workerId" element={<WorkerWatchComponent/>}/>
       <Route path="/" element={<RedirectToLogin />} />
     </Routes>
   );

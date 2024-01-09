@@ -60,3 +60,21 @@
     color: green;
   }
 }
+
+.worker-watch {
+  font-size: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: $palette-1;
+  background-color: $palette-4;
+  flex-direction: column;
+
+  .number {
+    font-size: 20rem;
+    font-weight: bold;
+    color: green;
+  }
+}

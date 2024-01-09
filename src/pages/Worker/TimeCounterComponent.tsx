@@ -12,7 +12,7 @@ const TimeCounter = ({ createdAt }: {createdAt: string}) => {
   }, []);
 
   return (
-    <>{ currentTime.getHours() < 24 ? currentTime.toLocaleTimeString() : '> day' }</>
+    <>{ currentTime.getDate() < 1 ? currentTime.toLocaleTimeString() : 'over 1 day' }</>
   );
 };
 
