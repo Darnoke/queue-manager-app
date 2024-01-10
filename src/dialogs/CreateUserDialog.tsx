@@ -11,7 +11,7 @@ interface CreateUserDialogProps {
 const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState(UserRole.Worker);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const {axiosInstance} = useUser();
 
@@ -21,8 +21,8 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
       await axiosInstance.post('/admin/users/register', { username, role });
       onClose(true);
     } catch (error: any) {
-      setError(error.response.data)
-      console.error('Error during registration:', error.response.data);
+      setError(error?.response?.data)
+      console.error('Error during registration:', error?.response?.data);
     }
   };
 

@@ -14,7 +14,7 @@ interface EditUserCategoriesDialogProps {
 
 const EditUserCategoriesDialog: React.FC<EditUserCategoriesDialogProps> = ({ open, onClose, userInput, categories, queueId }) => {
   const [user, setUser] = useState<UserCategories>({} as UserCategories);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const {axiosInstance} = useUser();
 
@@ -28,8 +28,8 @@ const EditUserCategoriesDialog: React.FC<EditUserCategoriesDialogProps> = ({ ope
       await axiosInstance.put('/admin/queues/' + queueId + '/users/' + user._id, { categories: user.categories });
       onClose(true);
     } catch (error: any) {
-        setError(error.response.data);
-        console.error('Error during registration:', error.response.data);
+        setError(error?.response?.data);
+        console.error('Error during registration:', error?.response?.data);
       }
   };
 

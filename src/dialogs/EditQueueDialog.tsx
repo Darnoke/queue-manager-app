@@ -11,7 +11,7 @@ interface EditUserDialogProps {
 
 const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueInput }) => {
   const [queue, setQueue] = useState<QueueList>({} as QueueList);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const {axiosInstance} = useUser();
 
@@ -25,8 +25,8 @@ const EditQueueDialog: React.FC<EditUserDialogProps> = ({ open, onClose, queueIn
       await axiosInstance.put('/admin/queues/' + queue._id, { name: queue.name });
       onClose(true);
     } catch (error: any) {
-      setError(error.response.data)
-      console.error('Error during registration:', error.response.data);
+      setError(error?.response?.data)
+      console.error('Error during registration:', error?.response?.data);
     }
   };
 

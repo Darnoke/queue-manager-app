@@ -8,7 +8,7 @@ const LoginComponent = () => {
   const { login, axiosInstance } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
   const [isChangePasswordDialogOpen, setChangePasswordDialogOpen] = useState(false);
 
   const handleLogin = async () => {
@@ -23,8 +23,8 @@ const LoginComponent = () => {
         login();
       }
     } catch (error: any) {
-      setError(error.response.data);
-      console.error('Error during login:', error.response.data);
+      setError(error?.response?.data);
+      console.error('Error during login:', error?.response?.data);
     }
   };
 

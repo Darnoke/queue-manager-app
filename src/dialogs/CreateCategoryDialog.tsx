@@ -10,7 +10,7 @@ interface CreateCategoryDialogProps {
 
 const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({ open, queueId, onClose }) => {
   const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const {axiosInstance} = useUser();
 
@@ -20,8 +20,8 @@ const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({ open, queue
       await axiosInstance.post('/admin/queues/' + queueId + '/categories', { name }); 
       onClose(true);
     } catch (error: any) {
-      setError(error.response.data)
-      console.error('Error during registration:', error.response.data);
+      setError(error?.response?.data)
+      console.error('Error during registration:', error?.response?.data);
     }
   };
 

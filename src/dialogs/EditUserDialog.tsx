@@ -12,7 +12,7 @@ interface EditUserDialogProps {
 
 const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInput }) => {
   const [user, setUser] = useState<User>({} as User);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const {axiosInstance} = useUser();
 
@@ -26,8 +26,8 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({ open, onClose, userInpu
       await axiosInstance.put('/admin/users/' + user._id, {...user});
       onClose(true);
     } catch (error: any) {
-      setError(error.response.data);
-      console.error('Error during registration:', error.response.data);
+      setError(error?.response?.data);
+      console.error('Error during registration:', error?.response?.data);
     }
   };
 

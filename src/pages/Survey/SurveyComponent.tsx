@@ -11,7 +11,7 @@ const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: numb
   const { queueId, surveyId } = useParams();
   const [question, setQuestion] = useState<Question>({ _id: '', question: '' });
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const selectAnswer = async (answerId: string) => {
     try {
@@ -29,8 +29,8 @@ const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: numb
         setAnswers(data.answers);
       }
     } catch (error: any) {
-      setError(error.response.data);
-      console.error('Error selecting answer:', error.response.data);
+      setError(error?.response?.data);
+      console.error('Error selecting answer:', error?.response?.data);
     }
   }
 
@@ -46,8 +46,8 @@ const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: numb
           setAnswers(data.answers);
         }
       } catch (error: any) {
-        setError(error.response.data);
-        console.error('Error getting survey:', error.response.data);
+        setError(error?.response?.data);
+        console.error('Error getting survey:', error?.response?.data);
       }
     }
     getSurvey();

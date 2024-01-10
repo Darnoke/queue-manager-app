@@ -11,7 +11,7 @@ interface ChangePasswordDialogProps {
 const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClose, oldPassword = '' }) => {
   const [newPassword, setNewPassword] = useState('');
   const [firstTime, setFirstTime] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | undefined>('');
 
   const {axiosInstance} = useUser();
 
@@ -25,8 +25,8 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
       await axiosInstance.post('/auth/change-password', { oldPassword, newPassword });
       onClose();
     } catch (error: any) {
-      setError(error.response.data);
-      console.error('Error during changing password:', error.response.data);
+      setError(error?.response?.data);
+      console.error('Error during changing password:', error?.response?.data);
     }
   };
 
