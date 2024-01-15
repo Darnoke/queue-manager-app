@@ -9,7 +9,6 @@ import ConfirmationDialog from "../../../dialogs/ConfirmationDialog.js";
 import { NodeType } from "../../../enums/NodeType.js";
 import EndNode from "./EndNode.js";
 import { useUser } from "../../../contexts/UserContext.js";
-import { Category } from "../../../models/Category.js";
 import { useCategoryContext } from "../../../contexts/CategoryContext.js";
 
 const nodeTypes = {
