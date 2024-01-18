@@ -8,6 +8,8 @@ import { CategoryStatus } from '../../enums/CategoryStatus';
 import { ClientStatus } from '../../enums/ClientStatus';
 import TimeCounter from './TimeCounterComponent';
 
+const socketUrl = import.meta.env.VITE_REACT_APP_API_SOCKET_URL;
+
 const WorkerQueueManagmentComponent: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [currentClient, setCurrentClient] = useState<Client | null>(null);
@@ -20,7 +22,7 @@ const WorkerQueueManagmentComponent: React.FC = () => {
 
   useEffect(() => {
     // Connect to the Socket.IO server
-    const socket = io('http://localhost:3000', {
+    const socket = io(socketUrl, {
       query: {
         queueId: queueId,
         userId: user._id

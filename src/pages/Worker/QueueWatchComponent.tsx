@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Client } from '../../models/Client';
 import './WorkerStyles.scss';
 
+const socketUrl = import.meta.env.VITE_REACT_APP_API_SOCKET_URL;
+
 const QueueWatchComponent = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -11,7 +13,7 @@ const QueueWatchComponent = () => {
   const { queueId } = useParams();
 
   useEffect(() => {
-    const socket = io('http://localhost:3000', {
+    const socket = io(socketUrl, {
       query: {
         queueId: queueId,
       }
