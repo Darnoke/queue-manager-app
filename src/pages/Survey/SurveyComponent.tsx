@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { Question } from "../../models/Question";
 import './SurveyStyles.scss';
 
-const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: number) => void }) => {
+const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: number, queueId: string) => void }) => {
   const { axiosInstance } = useUser();
   const { queueId, surveyId } = useParams();
   const [question, setQuestion] = useState<Question>({ _id: '', question: '' });
@@ -23,7 +23,7 @@ const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: numb
       const data = await response.data;
 
       if (data.finished) {
-        navigateToFinish(data.assignedNumber);
+        navigateToFinish(data.assignedNumber, queueId ? queueId : '');
       } else {
         setQuestion(data.question);
         setAnswers(data.answers);
@@ -40,7 +40,7 @@ const SurveyComponent = ({ navigateToFinish }: { navigateToFinish: (number: numb
         const response = await axiosInstance.get('/client/survey/' + queueId + '/' + surveyId);
         const data = await response.data;
         if (data.finished) {
-          navigateToFinish(data.assignedNumber);
+          navigateToFinish(data.assignedNumber, queueId ? queueId : '');
         } else {
           setQuestion(data.question);
           setAnswers(data.answers);
