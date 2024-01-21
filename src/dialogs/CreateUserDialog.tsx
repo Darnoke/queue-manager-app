@@ -12,14 +12,20 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
   const [username, setUsername] = useState('');
   const [role, setRole] = useState(UserRole.Worker);
   const [error, setError] = useState<string | undefined>('');
+  const [generatedPassword, setGeneratedPassword] = useState<string>('');
+  const [userCreated, setUserCreated] = useState<boolean>(false);
 
   const {axiosInstance} = useUser();
 
   const handleCreate = async () => {
     try {
       setError('');
-      await axiosInstance.post('/admin/users/register', { username, role });
-      onClose(true);
+      const response = await axiosInstance.post('/admin/users/register', { username, role });
+      const data = response.data;
+      if (data.generatedPassword) {
+        setUserCreated(true);
+        setGeneratedPassword(data.generatedPassword);
+      } 
     } catch (error: any) {
       setError(error?.response?.data)
       console.error('Error during registration:', error?.response?.data);
@@ -27,13 +33,15 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
   };
 
   useEffect(() => {
+    setUserCreated(false);
     setUsername('');
     setRole(UserRole.None);
     setError('');
+    setGeneratedPassword('');
   }, [open]);
 
   return (
-    <Dialog open={open} onClose={() => onClose(false)}>
+    <Dialog open={open} onClose={() => onClose(userCreated)}>
       <DialogTitle>Create User</DialogTitle>
       <DialogContent>
         <TextField
@@ -61,12 +69,14 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose }) =>
         </Select>
         <br />
         <a className='error'>{error}</a>
+        {userCreated && (
+          <a>User created, password: {generatedPassword}</a>)}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => onClose(false)}>Cancel</Button>
-        <Button onClick={handleCreate} color="primary">
+        <Button onClick={() => onClose(userCreated)}>{userCreated ? 'Close' : 'Cancel'}</Button>
+        {!userCreated && (<Button onClick={handleCreate} color="primary">
           Create
-        </Button>
+        </Button>)}
       </DialogActions>
     </Dialog>
   );
