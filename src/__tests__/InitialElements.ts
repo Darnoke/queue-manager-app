@@ -1,5 +1,3 @@
-// import { MarkerType } from 'reactflow';
-
 import { Edge, Node } from "reactflow";
 
 export const nodes: Node[] = [
@@ -32,17 +30,4 @@ export const nodes: Node[] = [
 
 export const edges: Edge[] = [
     { id: 'e1-2', source: '1', target: '2'},
-    // {
-    //   id: 'e4-3',
-    //   source: '4',
-    //   target: '3',
-    //   type: 'smoothstep',
-    //   sourceHandle: 'ans-0',
-    //   data: {
-    //     selectIndex: 0,
-    //   },
-    //   markerEnd: {
-    //     type: MarkerType.ArrowClosed,
-    //   },
-    // },
   ];

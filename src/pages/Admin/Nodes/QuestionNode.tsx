@@ -161,7 +161,7 @@ function QuestionNode({ id, data }: QuestionNodeParams) {
 
   return (
     <>
-      <div className="question-node__header">
+      <div className="question-node__header" data-testid="question-node">
         <TextField
           label="Question"
           multiline
