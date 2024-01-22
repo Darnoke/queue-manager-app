@@ -19,8 +19,14 @@ describe('AdminQueuePlannerComponent', () => {
     <UserProvider>
       <AdminQueuePlannerWrapComponent />
     </UserProvider>);
+    screen.debug();
     
-    expect(screen.getByTestId('rf__wrapper')).toBeDefined(); // Checks is react flow renders correctly
+    // Checks is react flow renders correctly
+    expect(screen.getByTestId('rf__wrapper')).toBeDefined(); 
+    expect(screen.getByTestId('rf__minimap')).toBeDefined();
+    expect(screen.getByTestId('rf__controls')).toBeDefined();
+    expect(screen.getByTestId('rf__background')).toBeDefined();
+
     expect(screen.getByTestId('admin-queue-planner-side-component')).toBeDefined();
   });
 });
