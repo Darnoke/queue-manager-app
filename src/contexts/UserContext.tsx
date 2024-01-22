@@ -48,7 +48,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       console.log('Logout successful');
       setUser({ _id: '', username: '', role: UserRole.None });
     } catch (error: any) {
-      console.error('Error during logout:', error.response.data);
+      console.error('Error during logout:', error?.response?.data);
     }
   }
 

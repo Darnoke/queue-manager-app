@@ -39,7 +39,7 @@ const AdminQueuePlannerSideComponent = ({ addNode, queueUpdate, saveEvent, queue
   }, []);
 
   return (
-    <div className="side-container">
+    <div className="side-container" data-testid="admin-queue-planner-side-component">
       <FormControl fullWidth className='m-b-10'>
         <InputLabel id="queueSelectLabel">Select a Queue</InputLabel>
         <Select
