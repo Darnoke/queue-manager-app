@@ -19,7 +19,6 @@ describe('AdminQueuePlannerComponent', () => {
     <UserProvider>
       <AdminQueuePlannerWrapComponent />
     </UserProvider>);
-    screen.debug();
     
     // Checks is react flow renders correctly
     expect(screen.getByTestId('rf__wrapper')).toBeDefined(); 
